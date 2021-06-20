@@ -12,6 +12,22 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        
+        <a href="/dash">home</a>
+        <table>
+            <thead>
+                <th>{{recipe.rec_name}}</th>
+                <th>{{recipe.category}}</th>
+                <th>{{recipe.prep_time}}</th>
+            </thead>
+        </table>
+        <ul>
+        {% for i in ing_list %}
+        <li>{{i}}</li>
+        {% endfor %}
+        </ul>
+        {{recipe.procedure}}
+        <br>
+        <br>
+        <a href="/suggest/{{recipe.id}}">Make Suggestions</a>
     </body>
 </html>

@@ -12,6 +12,33 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        
+        <div class="container d-flex space-between">
+            <div class="col-4" class="">
+                <p>{{recipe.rec_name}}</p>
+                <p>{{recipe.category}}</p>
+                <p>{{recipe.prep_time}}</p>
+                <ul>
+                {% for i in ing_list %}
+                <li>{{i}}</li>
+                {% endfor %}
+                </ul>
+                {{recipe.procedure}}
+            </div>
+            <div class="col-4">
+                <form action="/create_sugg" method="POST">
+                    {% csrf_token %}
+                    <label for="rec_name" class="form-label">Recipe name</label>
+                    <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" name="category" class="form-control" value="{{recipe.category}}">
+                    <label for="prep_time" class="form-label">Prep Time</label>
+                    <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
+                    <label for="procedure" class="form-label">Procedure</label>
+                    <textarea name="procedure" id="" cols="30" rows="10">{{recipe.procedure}}</textarea>
+                    <label for="ingredients" class="form-label">Ingredients</label>
+                    <textarea name="ingredients" id="" cols="30" rows="10">{{recipe.ingredients}}</textarea>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
     </body>
 </html>

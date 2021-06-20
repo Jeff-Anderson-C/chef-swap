@@ -38,3 +38,24 @@ class User(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     objects = UserManager()
+
+class Recipe(models.Model):
+    rec_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=45)
+    prep_time = models.CharField(max_length=20)
+    procedure = models.CharField(max_length=455, null=True)
+    ingredients = models.TextField(max_length=455, null=True)
+    creator = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE, null=True)
+    favorite = models.ManyToManyField(User, related_name='fav_recipes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Suggestion(models.Model):
+    rec_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=45)
+    prep_time = models.CharField(max_length=20)
+    procedure = models.CharField(max_length=455)
+    ingredients = models.TextField(max_length=455)
+    helper = models.ForeignKey(User, related_name='help', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

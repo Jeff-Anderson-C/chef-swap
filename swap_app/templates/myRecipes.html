@@ -12,6 +12,27 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        
+        {{user.first_name}}'s Recipes
+        <a href="/dash">home</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Recipe Name</th>
+                    <th>Category</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipe in user_recipes %}
+                <tr>
+                    <td><a href="/recipe/{{recipe.id}}">{{recipe.rec_name}}</a></td>
+                    <td>{{recipe.category}}</td>
+                    <td>{{recipe.created_at}}</td>
+                    <td> <a href="/edit/{{recipe.id}}">edit</a></td>
+                    <td> <a href="/destroy/{{recipe.id}}">remove</a></td>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
     </body>
 </html>

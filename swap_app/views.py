@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages 
-from .models import User
+from .models import User, Recipe, Suggestion
 import bcrypt
 
 # Create your views here.
@@ -58,8 +58,98 @@ def dash(request):
 def new_rec(request):
     return render(request, 'newRecipe.html')
 
+def create_new(request):
+    user = User.objects.get(id=request.session['userid'])
+    new_recipe = Recipe.objects.create(
+        rec_name = request.POST ['rec_name'],
+        category = request.POST ['category'],
+        prep_time = request.POST ['prep_time'],
+        procedure = request.POST ['procedure'],
+        ingredients = request.POST ['ingredients'],
+        creator = user,
+    )
+    return redirect('/myRecipes')
 
 
+def myRecipes(request):
+    user = User.objects.get(id=request.session['userid'])
+    recipes = Recipe.objects.all()
+    context = {
+        'recipes': recipes,
+        'user': user,
+        'user_recipes': Recipe.objects.filter(creator=user),
+    }
+    return render(request, 'myRecipes.html', context)
+
+def all_rec(request):
+    recipes = Recipe.objects.order_by('category', 'rec_name')
+    context = {
+        'recipes':recipes
+    }
+    return render(request, 'allRecipes.html', context)
+
+
+
+def recipe(request, rec_id):
+    recipe = Recipe.objects.get(id=rec_id)
+    user = User.objects.get(id=request.session['userid'])
+    x = recipe.creator.id
+    y = recipe.ingredients.split('\n')
+    ing_list = [x.replace('\r',' ') for x in y]
+    context = {
+        'recipe': recipe,
+        'user': user,
+        'ing_list': ing_list,
+    }
+    if x == user.id:
+        return render(request, 'viewMyRec.html', context)
+    else:
+        return render(request, 'viewOthRec.html', context)
+
+
+def edit_rec(request, rec_id):
+    recipe = Recipe.objects.get(id=rec_id)
+    context = {
+        'recipe':recipe,
+    }
+    return render(request, 'editRecipe.html', context)
+
+def save_edit(request, rec_id):
+    this_recipe = Recipe.objects.get(id=rec_id)
+    this_recipe.rec_name = request.POST['rec_name']
+    this_recipe.category = request.POST['category']
+    this_recipe.prep_time = request.POST['prep_time']
+    this_recipe.procedure = request.POST['procedure']
+    this_recipe.ingredients = request.POST['ingredients']
+    this_recipe.save() 
+    return redirect('/myRecipes')
+
+def suggest(request, rec_id):
+    recipe = Recipe.objects.get(id=rec_id)
+    y = recipe.ingredients.split('\n')
+    ing_list = [x.replace('\r',' ') for x in y]
+    context = {
+        'recipe':recipe,
+        'ing_list': ing_list,
+    }
+    return render(request, 'suggRec.html', context)
+
+def create_sugg(request):
+    user = User.objects.get(id=request.session['userid'])
+    new_sugg = Suggestion.objects.create(
+        rec_name = request.POST ['rec_name'],
+        category = request.POST ['category'],
+        prep_time = request.POST ['prep_time'],
+        procedure = request.POST ['procedure'],
+        ingredients = request.POST ['ingredients'],
+        helper = user,
+    )
+    return redirect('/all_rec')
+
+def remove_rec(request, rec_id):
+    this_recipe = Recipe.objects.get(id=rec_id)
+    this_recipe.delete()
+    return redirect('/myRecipes')
 
 def logout(request):
     request.session.clear()

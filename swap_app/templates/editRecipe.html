@@ -12,6 +12,20 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        
+        <a href="/dash">home</a>
+        <form action="/save_edit/{{recipe.id}}" method="POST">
+            {% csrf_token %}
+            <label for="rec_name" class="form-label">Recipe name</label>
+            <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" name="category" class="form-control" value="{{recipe.category}}">
+            <label for="prep_time" class="form-label">Prep Time</label>
+            <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
+            <label for="procedure" class="form-label">Procedure</label>
+            <textarea name="procedure" id="" cols="30" rows="10">{{recipe.procedure}}</textarea>
+            <label for="ingredients" class="form-label">Ingredients</label>
+            <textarea name="ingredients" id="" cols="30" rows="10">{{recipe.ingredients}}</textarea>
+            <button type="submit">Submit</button>
+        </form>
     </body>
 </html>
