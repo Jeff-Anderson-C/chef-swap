@@ -8,21 +8,75 @@
         recipes, find inspiration, as well as show off your skills, and your knife roll">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        Welcome {{user.first_name}}
-
-            <a href="/myRecipes">My Recipes</a>
-            <a href="/suggMyRec">Suggestions</a>
-            <a href="/favRecipes">Favorite Recipes</a>
-            <a href="/all_rec">All Recipes</a>
-            <a href="/logout" class="btn btn-lg btn-primary">Logout</a> 
-            <div>
-                <a href="/new_rec">Create New Recipe</a>
-                <a href="/testKit">Test Kitchen</a>
-                <a href="/knifeRoll">Knife Roll</a>
+        <div class="container border border-dark border-4 rounded mt-5">
+            <div class="container p-3">
+                <div>
+                    <div class="swap_head d-flex align-bottom">
+                        <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
+                    </div>        
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">Welcome Chef {{user.first_name}}</a>
+                            <div class="collapse navbar-collapse" id="navbarText">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/myRecipes">My Recipes</a>                            </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/favRecipes">Favorite Recipes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <div>
+                        <a href="/new_rec"><img src="{% static 'img/recipe.jpg' %}" class="figure-img img-fluid rounded p-1" alt=""></a>
+                        <figcaption class="figure-caption">create new recipe</figcaption>
+                    </div> 
+                    <div>
+                        <a href="/testKit"><img src="{% static 'img/kitchen.jpg' %}" class="figure-img img-fluid rounded p-1" alt=""></a>
+                        <figcaption class="figure-caption">open test kitchen</figcaption>
+                    </div>
+                    <div>
+                        <a href="/knifeRoll"><img src="{% static 'img/knife.jpg' %}" class="figure-img img-fluid rounded p-1" alt=""></a>
+                        <figcaption class="figure-caption">show your knives</figcaption>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <a href="/logout" class="btn btn-lg btn-dark">Logout</a> 
+                </div>
             </div>
+            <br>
+            <br>
+            <br>
+            <div class="d-flex justify-content-center">
+                <div><h3>We were born to work together like feet, hands, and eyes...      -Marcus Aurelius</h3></div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
+                <div class="container">
+                    <span class="text-muted">Site developed by: Jeff Anderson</span>
+                </div>
+            </footer>
+        </div>
     </body>
 </html>

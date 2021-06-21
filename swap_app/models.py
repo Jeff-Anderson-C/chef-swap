@@ -56,6 +56,7 @@ class Suggestion(models.Model):
     prep_time = models.CharField(max_length=20)
     procedure = models.CharField(max_length=455)
     ingredients = models.TextField(max_length=455)
+    link = models.OneToOneField(Recipe, related_name='links', on_delete=models.CASCADE)
     helper = models.ForeignKey(User, related_name='help', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

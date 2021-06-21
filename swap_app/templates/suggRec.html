@@ -8,37 +8,75 @@
         recipes, find inspiration, as well as show off your skills, and your knife roll">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        <div class="container d-flex space-between">
-            <div class="col-4" class="">
-                <p>{{recipe.rec_name}}</p>
-                <p>{{recipe.category}}</p>
-                <p>{{recipe.prep_time}}</p>
-                <ul>
-                {% for i in ing_list %}
-                <li>{{i}}</li>
-                {% endfor %}
-                </ul>
-                {{recipe.procedure}}
+        <div class="container border border-dark border-4 rounded mt-5">
+            <div class="container p-3">
+                <div class="swap_head d-flex align-bottom">
+                    <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
+                </div>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
+                        <div class="collapse navbar-collapse" id="navbarText">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/myRecipes">My Recipes</a>                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/favRecipes">Favorite Recipes</a>
+                                </li>
+                                <li class="nav-item">                                    <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/dash">Home</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <div class="container d-flex justify-content-around mb-2">
+                    <div class="col-4 border border-dark border-4 rounded mt-2 p-2">
+                        <p><h1>{{recipe.rec_name}}</h1></p>
+                        <p>{{recipe.category}} {{recipe.prep_time}}</p> 
+                        <ul>
+                            {% for i in ing_list %}
+                                <li>{{i}}</li>
+                            {% endfor %}
+                        </ul>
+                        {{recipe.procedure}}
+                        <br>
+                        <br>
+                    </div>
+                    <div class="col-4 border border-dark border-4 rounded mt-2 p-2 mb-4">
+                        <form action="/create_sugg/{{recipe.id}}" method="POST">
+                            {% csrf_token %}
+                            <label for="rec_name" class="form-label">Recipe name</label>
+                            <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
+                            <label for="category" class="form-label">Category</label>
+                            <input type="text" name="category" class="form-control" value="{{recipe.category}}">
+                            <label for="prep_time" class="form-label">Prep Time</label>
+                            <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
+                            <label for="procedure" class="form-label">Procedure</label>
+                            <textarea name="procedure" class="form-control" id="" cols="30" rows="5">{{recipe.procedure}}</textarea>
+                            <label for="ingredients" class="form-label">Ingredients</label>
+                            <textarea name="ingredients" class="form-control" id="" cols="30" rows="5">{{recipe.ingredients}}</textarea>
+                            <button type="submit" class="btn btn-dark mt-2">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <footer class="footer mt-auto py-3 bg-dark mb-2">
+                    <div class="container">
+                        <span class="text-muted"></span>
+                    </div>
+                </footer>
             </div>
-            <div class="col-4">
-                <form action="/create_sugg" method="POST">
-                    {% csrf_token %}
-                    <label for="rec_name" class="form-label">Recipe name</label>
-                    <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
-                    <label for="category" class="form-label">Category</label>
-                    <input type="text" name="category" class="form-control" value="{{recipe.category}}">
-                    <label for="prep_time" class="form-label">Prep Time</label>
-                    <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
-                    <label for="procedure" class="form-label">Procedure</label>
-                    <textarea name="procedure" id="" cols="30" rows="10">{{recipe.procedure}}</textarea>
-                    <label for="ingredients" class="form-label">Ingredients</label>
-                    <textarea name="ingredients" id="" cols="30" rows="10">{{recipe.ingredients}}</textarea>
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
+        </div>
     </body>
 </html>

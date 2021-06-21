@@ -56,7 +56,11 @@ def dash(request):
     return render(request, 'dash.html', context)
 
 def new_rec(request):
-    return render(request, 'newRecipe.html')
+    user = User.objects.get(id=request.session['userid'])
+    context = {
+        'user':user
+    }
+    return render(request, 'newRecipe.html', context)
 
 def create_new(request):
     user = User.objects.get(id=request.session['userid'])
@@ -108,9 +112,11 @@ def recipe(request, rec_id):
 
 
 def edit_rec(request, rec_id):
+    user = User.objects.get(id=request.session['userid'])
     recipe = Recipe.objects.get(id=rec_id)
     context = {
         'recipe':recipe,
+        'user':user,
     }
     return render(request, 'editRecipe.html', context)
 
@@ -134,8 +140,9 @@ def suggest(request, rec_id):
     }
     return render(request, 'suggRec.html', context)
 
-def create_sugg(request):
+def create_sugg(request, rec_id):
     user = User.objects.get(id=request.session['userid'])
+    recipe = Recipe.objects.get(id=rec_id)
     new_sugg = Suggestion.objects.create(
         rec_name = request.POST ['rec_name'],
         category = request.POST ['category'],
@@ -143,15 +150,71 @@ def create_sugg(request):
         procedure = request.POST ['procedure'],
         ingredients = request.POST ['ingredients'],
         helper = user,
+        link = recipe,
     )
     return redirect('/all_rec')
+
+def my_suggs(request):
+    user = User.objects.get(id=request.session['userid'])
+    my_recs = Recipe.objects.filter(creator=user)
+    context = {
+        'my_recs':my_recs,
+        'user':user
+    }
+    return render(request, 'mySuggs.html', context)
+
+def sugg_for_me(request, rec_id):
+    user = User.objects.get(id=request.session['userid'])
+    recipe = Recipe.objects.get(id=rec_id)
+    sugg = Suggestion.objects.filter(link=recipe)
+    this_sugg=sugg[0]
+    y = recipe.ingredients.split('\n')
+    ingy_list = [x.replace('\r',' ') for x in y]
+    z = this_sugg.ingredients.split('\n')
+    ingz_list = [x.replace('\r',' ') for x in z]
+    context = {
+        'recipe':recipe,
+        'this_sugg':this_sugg,
+        'ingy_list':ingy_list,
+        'ingz_list':ingz_list,
+        'user':user,
+    }
+    return render(request, 'suggForMyRec.html', context)
+
+def fav_recipes(request):
+    user = User.objects.get(id=request.session['userid'])
+    recipes = Recipe.objects.all()
+    context = {
+        'recipes': recipes,
+        'user': user,
+        'fav_recipes': Recipe.objects.filter(favorite=user),
+    }
+    return render(request, 'favRecipes.html', context)
+
+def make_fav(request, rec_id):
+    user = User.objects.get(id=request.session['userid'])
+    recipe = Recipe.objects.get(id=rec_id)
+    user.fav_recipes.add(recipe)
+    return redirect('/favRecipes')
+
 
 def remove_rec(request, rec_id):
     this_recipe = Recipe.objects.get(id=rec_id)
     this_recipe.delete()
     return redirect('/myRecipes')
 
+def delete_sugg(request, sugg_id):
+    sugg = Suggestion.objects.get(id=sugg_id)
+    sugg.delete()
+    return redirect('/my_suggs')
+
+
 def logout(request):
     request.session.clear()
     return redirect('/')
 
+def test_kit(request):
+    return render(request, 'testKit.html')
+
+def knife_roll(request):
+    return render(request, 'knifeRoll.html')
