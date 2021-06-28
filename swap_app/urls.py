@@ -24,4 +24,5 @@ urlpatterns = [
     path('make_fav/<int:rec_id>', views.make_fav),
     path('testKit', views.test_kit),
     path('knifeRoll', views.knife_roll),
+    path('photo_up', views.photo_up),
 ]

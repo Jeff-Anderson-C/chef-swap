@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-
         <div class="container border border-dark border-4 rounded mt-5">
             <div class="container p-3">
                 <div class="swap_head d-flex align-bottom">
@@ -22,7 +21,7 @@
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Chef {{user.first_name}}'s Recipes</a>
+                        <a class="navbar-brand" href="#">Chef {{user.first_name}}'s Suggestions</a>
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
@@ -43,33 +42,34 @@
                         </div>
                     </div>
                 </nav>
-            
-                <table class="table table-light table-striped mt-4">
-                    <thead>
-                        <tr>
-                            <th>Recipe Name</th>
+                <div>
+                    <table class="table table-light table-striped mt-4">
+                        <thead>
                             <th>Category</th>
-                            <th>Created</th>
+                            <th>Recipe Name</th>
+                            <th>Collaborator</th>
                             <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for recipe in user_recipes %}
-                        <tr>
-                            <td><a href="/recipe/{{recipe.id}}">{{recipe.rec_name}}</a></td>
-                            <td>{{recipe.category}}</td>
-                            <td>{{recipe.created_at}}</td>
-                            <td> <a href="/edit/{{recipe.id}}">edit</a> <a href="/destroy/{{recipe.id}}">remove</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for recipe in my_recs %}
+                                {% if recipe.links %}
+                                    <tr>
+                                        <td>{{recipe.category}}</td>
+                                        <td>{{recipe.rec_name}}</a></td>
+                                        <td>Chef {{recipe.helper.first_name}}</td>
+                                        <td><a href="/sugg_for_me/{{recipe.id}}">view suggestion</a></td>
+                                    </tr>
+                                    {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
                     <div class="container">
                         <span class="text-muted"></span>
                     </div>
                 </footer>
             </div>
-        </div>
+        </div>    
     </body>
 </html>

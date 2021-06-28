@@ -14,9 +14,9 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        <div class="container border border-dark border-4 rounded mt-5">
+        <div class="container border border-dark border-4 rounded mt-4">
             <div class="container p-3">
-                <div>
+                <div class="mb-4">
                     <div class="swap_head d-flex align-bottom">
                         <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
                     </div>        
@@ -55,14 +55,26 @@
                         <figcaption class="figure-caption">show your knives</figcaption>
                     </div>
                 </div>
-                <div class="d-flex justify-content-center mt-4">
-                    <a href="/logout" class="btn btn-lg btn-dark">Logout</a> 
+                <div class="d-flex justify-content-around mt-4">
+                    <div class="col-3 border border-dark border-2 mt-4 p-2 bg-light">
+                        <p>Document and store your tried and tested recipes. Arranged by category amongst everyone elses recipes, 
+                            yours will be available to view and are open for suggested improvements.</p>
+                    </div>
+                    <div class="col-3 border border-dark border-2 mt-4 p-2 bg-light">
+                        <p>Enter the test kitchen and get to work. Take your idea from concept and notes through tests and tastings. Document 
+                            your process with timestamped notes of previous iterations. When you're ready, ship it off to the public space. 
+                        </p>
+                    </div>
+                    <div class="col-3 border border-dark border-2 mt-4 p-2 bg-light">
+                        <p>Knives, tweezers, spoons, spats, and aprons. Open your knife roll; share pics and info about the shiny tools, and indispensable
+                            toys you've collected over the years. 
+                        </p>
+                    </div>
                 </div>
             </div>
             <br>
             <br>
-            <br>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-4">
                 <div><h3>We were born to work together like feet, hands, and eyes...      -Marcus Aurelius</h3></div>
             </div>
             <br>
@@ -70,7 +82,9 @@
             <br>
             <br>
             <br>
-            <br>
+            <div class="d-flex justify-content-center mt-4">
+                <a href="/logout" class="btn btn-lg btn-dark">Logout</a> 
+            </div>
             <br>
             <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
                 <div class="container">

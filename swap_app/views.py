@@ -29,6 +29,8 @@ def register(request):
         return redirect('/dash')
 
 def login(request):
+    if request.method == "GET":
+        return redirect('/')
     errors = User.objects.login_validator(request.POST)
     if len(errors) > 0:
         for key, value in errors.items():
@@ -72,16 +74,24 @@ def create_new(request):
         ingredients = request.POST ['ingredients'],
         creator = user,
     )
-    return redirect('/myRecipes')
+    return redirect('/photo_up', {'rec_id':new_recipe.id})
+
+def photo_up(request):
+    pass
+    return redirect('/notes_up', {'rec_id':new_recipe.id})
+
+
+
 
 
 def myRecipes(request):
     user = User.objects.get(id=request.session['userid'])
     recipes = Recipe.objects.all()
+    my_recs = Recipe.objects.filter(creator=user)
     context = {
         'recipes': recipes,
         'user': user,
-        'user_recipes': Recipe.objects.filter(creator=user),
+        'user_recipes': my_recs.order_by('category', 'rec_name'),
     }
     return render(request, 'myRecipes.html', context)
 

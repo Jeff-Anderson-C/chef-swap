@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-
         <div class="container border border-dark border-4 rounded mt-5">
             <div class="container p-3">
                 <div class="swap_head d-flex align-bottom">
@@ -22,7 +21,7 @@
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Chef {{user.first_name}}'s Recipes</a>
+                        <a class="navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
@@ -43,27 +42,27 @@
                         </div>
                     </div>
                 </nav>
-            
-                <table class="table table-light table-striped mt-4">
-                    <thead>
-                        <tr>
-                            <th>Recipe Name</th>
-                            <th>Category</th>
-                            <th>Created</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for recipe in user_recipes %}
-                        <tr>
-                            <td><a href="/recipe/{{recipe.id}}">{{recipe.rec_name}}</a></td>
-                            <td>{{recipe.category}}</td>
-                            <td>{{recipe.created_at}}</td>
-                            <td> <a href="/edit/{{recipe.id}}">edit</a> <a href="/destroy/{{recipe.id}}">remove</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="d-flex justify-content-between mb-4">
+                    <div class="col-3 border border-dark border-4 rounded mt-2 p-2">
+                        <p><h1>{{recipe.rec_name}}</h1></p>
+                        <p>{{recipe.category}} {{recipe.prep_time}}</p> 
+                        <ul>
+                            {% for i in ing_list %}
+                                <li>{{i}}</li>
+                            {% endfor %}
+                        </ul>
+                        {{recipe.procedure}}
+                        <br>
+                        <br>
+                        <a href="/edit/{{recipe.id}}" class="btn btn-dark">Edit</a>
+                    </div>
+                    <div class="col-3 border border-dark border-4 rounded mt-2 p-2">
+                        <p><h1>Notes</h1></p> <textarea name="" id="" cols="25" rows="10"></textarea>
+                    </div>
+                    <div class="col-3 border border-dark border-4 rounded mt-2 p-2">
+                        <p><h1>Image</h1></p>
+                    </div>
+                </div>
                 <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
                     <div class="container">
                         <span class="text-muted"></span>
