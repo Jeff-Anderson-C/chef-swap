@@ -9,7 +9,7 @@ urlpatterns = [
     path('logout', views.logout),
     path('new_rec', views.new_rec),
     path('create_new', views.create_new),
-    path('myRecipes', views.myRecipes),
+    path('my_recipes', views.my_recipes),
     path('recipe/<int:rec_id>', views.recipe),
     path('all_rec', views.all_rec),
     path('edit/<int:rec_id>', views.edit_rec),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('testKit', views.test_kit),
     path('knifeRoll', views.knife_roll),
     path('photo_up', views.photo_up),
+    path('add_notes', views.add_notes),
 ]

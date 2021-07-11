@@ -21,11 +21,11 @@
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
                     <div class="container-fluid">
-                        <a class="col-2 navbar-brand" href="#">Chef {{recipe.creator.first_name}}'s {{recipe.rec_name}}</a>
+                        <a class="col-2 navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>                            </li>
+                                    <a class="nav-link active" aria-current="page" href="/myRecipes">My Recipes</a>                            </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
                                 </li>
@@ -46,8 +46,9 @@
                         </div>
                     </div>
                 </nav>
-                <div class="d-flex justify-content-around mb-4 mt-4">
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                <form action="/add_notes" method="POST" class="d-flex justify-content-between mb-4">
+                    {% csrf_token %}
+                    <div class="col-3 border border-dark border-4 rounded mt-2 p-2">
                         <p><h1>{{recipe.rec_name}}</h1></p>
                         <p>{{recipe.category}} {{recipe.prep_time}}</p> 
                         <ul>
@@ -58,20 +59,19 @@
                         {{recipe.procedure}}
                         <br>
                         <br>
-                        <a href="/suggest/{{recipe.id}}" class="btn btn-dark">Collaborate</a>
-                        <a href="/make_fav/{{recipe.id}}" class="btn btn-dark">Favorite</a>
+                        <a href="/edit/{{recipe.id}}" class="btn btn-dark">Edit</a>
                     </div>
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
-                        {{recipe.notes}}
+                    <div class="col-3 border border-dark border-4 rounded mt-2 p-2">
+                        <p><h1>Notes</h1></p> <textarea name="notes" id="" cols="25" rows="10"></textarea>
+                        <button class="btn btn-dark mb-1">Submit</button>
                     </div>
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
-                        {% if pic == None %}
-                            <img class="img-fluid" src="/media/images/default.jpg" alt="">
-                        {% else %}
-                            <img src="{{pic.image.url}}" class="d-block w-100" alt="...">
+                    <div class="col-5 border border-dark border-4 rounded mt-2 p-2">
+                        {% if img_obj %}
+                        <!-- <h3>Succesfully uploaded : {{img_obj.title}}</h3> -->
+                        <img class="figure-image image-fluid" src="{{img_obj.image.url}}" alt="connect" style="max-height:300px">
                         {% endif %}
                     </div>
-                </div>
+                </form>
                 <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
                     <div class="container">
                         <span class="text-muted"></span>

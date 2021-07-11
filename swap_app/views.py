@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages 
-from .models import User, Recipe, Suggestion
+from .models import User, Recipe, Suggestion, Image
 import bcrypt
+from .forms import ImageForm
+import random 
 
 # Create your views here.
 
@@ -74,17 +76,50 @@ def create_new(request):
         ingredients = request.POST ['ingredients'],
         creator = user,
     )
-    return redirect('/photo_up', {'rec_id':new_recipe.id})
+    request.session['rec_id'] = new_recipe.id
+    return redirect('/photo_up')
+
+def rec_pic(request, rec_id):
+    pass
 
 def photo_up(request):
-    pass
-    return redirect('/notes_up', {'rec_id':new_recipe.id})
+# """Process images uploaded by users"""
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Get the current instance object to display in the template
+            img_obj = form.instance
+            recipe = Recipe.objects.get(id=request.session['rec_id']) 
+            img_obj.for_recipe.add(recipe)
+            user = User.objects.get(id=request.session['userid'])
+            x = recipe.creator.id
+            y = recipe.ingredients.split('\n')
+            ing_list = [x.replace('\r',' ') for x in y]
+            context = {
+                'recipe': recipe,
+                'user': user,
+                'ing_list': ing_list,
+                'form': form,
+                'img_obj': img_obj,
+            }
+            recipe.save()
+            user.save()
+            img_obj.save()
+            return render(request, 'addNotes.html', context)
+    else:
+        form = ImageForm()
+    return render(request, 'rec_pic.html', {'form': form})
+
+def add_notes(request):
+    recipe = Recipe.objects.get(id=request.session['rec_id'])
+    recipe.notes = request.POST['notes']
+    recipe.save()
+    m = request.session.pop('rec_id')
+    return redirect('/my_recipes')
 
 
-
-
-
-def myRecipes(request):
+def my_recipes(request):
     user = User.objects.get(id=request.session['userid'])
     recipes = Recipe.objects.all()
     my_recs = Recipe.objects.filter(creator=user)
@@ -98,7 +133,7 @@ def myRecipes(request):
 def all_rec(request):
     recipes = Recipe.objects.order_by('category', 'rec_name')
     context = {
-        'recipes':recipes
+        'recipes':recipes,
     }
     return render(request, 'allRecipes.html', context)
 
@@ -108,12 +143,17 @@ def recipe(request, rec_id):
     recipe = Recipe.objects.get(id=rec_id)
     user = User.objects.get(id=request.session['userid'])
     x = recipe.creator.id
+    if recipe.images.exists():
+        pic = recipe.images.get()
+    else:
+        pic = None
     y = recipe.ingredients.split('\n')
     ing_list = [x.replace('\r',' ') for x in y]
     context = {
         'recipe': recipe,
         'user': user,
         'ing_list': ing_list,
+        'pic':pic,
     }
     if x == user.id:
         return render(request, 'viewMyRec.html', context)
@@ -138,7 +178,7 @@ def save_edit(request, rec_id):
     this_recipe.procedure = request.POST['procedure']
     this_recipe.ingredients = request.POST['ingredients']
     this_recipe.save() 
-    return redirect('/myRecipes')
+    return redirect('/my_recipes')
 
 def suggest(request, rec_id):
     recipe = Recipe.objects.get(id=rec_id)
@@ -211,7 +251,7 @@ def make_fav(request, rec_id):
 def remove_rec(request, rec_id):
     this_recipe = Recipe.objects.get(id=rec_id)
     this_recipe.delete()
-    return redirect('/myRecipes')
+    return redirect('/my_recipes')
 
 def delete_sugg(request, sugg_id):
     sugg = Suggestion.objects.get(id=sugg_id)

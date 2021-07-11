@@ -13,19 +13,19 @@
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
-    <body>
-        <div class="container border border-dark border-4 rounded mt-5">
+    <body class="bg-light">
+        <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-5">
             <div class="container p-3">
                 <div class="swap_head d-flex align-bottom">
                     <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Chef {{user.first_name}}'s Favorite Recipes</a>
+                        <a class="col-2 navbar-brand text-success" href="#">All Favorite Recipes</a>
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/myRecipes">My Recipes</a>                            </li>
+                                    <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>                            </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
                                 </li>
@@ -36,12 +36,35 @@
                                     <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="/new_rec">New Recipe</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="/dash">Home</a>
                                 </li>
                             </ul>
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
                         </div>
                     </div>
                 </nav>
+                <div class="d-flex justify-content-between mt-4">
+                    
+                    {% for cat in categories %}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm" type="button">
+                            {{cat}}
+                        </button>
+                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
                 <table class="table table-light table-striped mt-4">
                     <thead>
                         <th>Category</th>
@@ -58,7 +81,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
+                <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4 rounded">
                     <div class="container">
                         <span class="text-muted"></span>
                     </div>

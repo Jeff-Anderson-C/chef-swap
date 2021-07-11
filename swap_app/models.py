@@ -29,15 +29,6 @@ class UserManager(models.Manager):
             errors['email'] = 'Email not yet registered'
         return errors
 
-class Image(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='images')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(delf):
-        return self.title
-
 
 class User(models.Model):
     first_name = models.CharField(max_length=255)
@@ -49,6 +40,7 @@ class User(models.Model):
     updated_at = models.DateField(auto_now=True)
     objects = UserManager()
 
+
 class Recipe(models.Model):
     rec_name = models.CharField(max_length=255)
     category = models.CharField(max_length=45)
@@ -57,8 +49,19 @@ class Recipe(models.Model):
     ingredients = models.TextField(max_length=455, null=True)
     creator = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE, null=True)
     favorite = models.ManyToManyField(User, related_name='fav_recipes')
+    notes = models.TextField(max_length=455, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Image(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images', default='default.jpg')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    for_recipe = models.ForeignKey(Recipe, related_name='images', on_delete=models.CASCADE, null=True)
+
+
 
 class Suggestion(models.Model):
     rec_name = models.CharField(max_length=255)

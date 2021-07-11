@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        <div class="container border border-dark border-4 rounded mt-5">
+        <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-5">
             <div class="container p-3">
                 <div>
                     <div class="swap_head d-flex align-bottom">
@@ -22,11 +22,11 @@
                     </div>
                     <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
                         <div class="container-fluid">
-                            <a class="navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
+                            <a class="col-2 navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
                             <div class="collapse navbar-collapse" id="navbarText">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/myRecipes">My Recipes</a>                            </li>
+                                        <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>                            </li>
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
                                     </li>
@@ -40,6 +40,10 @@
                                         <a class="nav-link active" aria-current="page" href="/dash">Home</a>
                                     </li>
                                 </ul>
+                                <form class="d-flex">
+                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
                             </div>
                         </div>
                     </nav>
@@ -62,6 +66,7 @@
                     <div class="container">
                         <span class="text-muted"></span>
                     </div>
+                    
                 </footer>
             </div>
         </div>
