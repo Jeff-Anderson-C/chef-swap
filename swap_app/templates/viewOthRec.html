@@ -47,7 +47,7 @@
                     </div>
                 </nav>
                 <div class="d-flex justify-content-around mb-4 mt-4">
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         <p><h1>{{recipe.rec_name}}</h1></p>
                         <p>{{recipe.category}} {{recipe.prep_time}}</p> 
                         <ul>
@@ -64,7 +64,7 @@
                     <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         {{recipe.notes}}
                     </div>
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         {% if pic == None %}
                             <img class="img-fluid" src="/media/images/default.jpg" alt="">
                         {% else %}

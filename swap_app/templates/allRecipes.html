@@ -53,23 +53,24 @@
                     </div>
                 </nav>
                 <div class="d-flex justify-content-between mt-4">
-                    
-                    {% for cat in categories %}
-                    <div class="btn-group">
-                        <button class="btn btn-secondary btn-sm" type="button">
-                            {{cat}}
-                        </button>
-                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                        </ul>
-                    </div>
+                    {% for cat in cats %}
+                        <div class="btn-group">
+                            <button class="btn btn-secondary" type="button">
+                            {{cat.name}}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                    {% for l in recipes.all %}
+                                        {% if cat.name == l.category.name %}
+                                            <li><a class="dropdown-item" href="/recipe/{{l.id}}">{{l.rec_name}}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                            </ul>
+                        </div>
                     {% endfor %}
                 </div>
-
-
                 <div class="d-flex justify-content-between mt-3 mb-3" >
                     <div class="col-6" > 
                         <table class="table table-light table-striped mt-4 shadow p-3 mb-5 bg-body rounded">
@@ -81,7 +82,7 @@
                             <tbody>
                                 {% for recipe in recipes %}
                                 <tr>
-                                    <td>{{recipe.category}}</td>
+                                    <td>{{recipe.category.name}}</td>
                                     <td><a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a></td>
                                     <td>{{recipe.creator.first_name}}</td>
                                 </tr>
@@ -121,4 +122,4 @@
             </div>
         </div>
     </body>
-</html>
+</html> 

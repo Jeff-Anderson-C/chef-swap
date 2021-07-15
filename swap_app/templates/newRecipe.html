@@ -60,7 +60,7 @@
                         <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
                         
                         <label class="form-label" for="category">Category</label>
-                        <select class="form-select" id="category">
+                        <select class="form-select" name="category">
                             {% for cat in categories %}
                                 <option value="{{cat}}">{{cat}}</option>
                             {% endfor %}

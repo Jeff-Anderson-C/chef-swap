@@ -21,7 +21,7 @@
                 </div>
                 <nav class=" navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
                     <div class="container">
-                        <a class="col-2 navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
+                        <a class="col-2 navbar-brand text-success" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
@@ -47,9 +47,9 @@
                     </div>
                 </nav>
                 <div class="d-flex justify-content-around mb-4 mt-4">
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         <p><h1>{{recipe.rec_name}}</h1></p>
-                        <p>{{recipe.category}} {{recipe.prep_time}}</p> 
+                        <p>{{recipe.category.name}} {{recipe.prep_time}}</p> 
                         <ul>
                             {% for i in ing_list %}
                                 <li>{{i}}</li>
@@ -63,7 +63,7 @@
                     <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         {{recipe.notes}}
                     </div>
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         {% if pic == None %}
                             <img class="img-fluid" src="/media/images/default.jpg" alt="">
                         {% else %}

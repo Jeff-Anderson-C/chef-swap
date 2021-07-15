@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages 
-from .models import User, Recipe, Suggestion, Image
+from .models import User, Recipe, Suggestion, Image, Category
 import bcrypt
 from .forms import ImageForm
 import random 
@@ -68,14 +68,17 @@ def new_rec(request):
 
 def create_new(request):
     user = User.objects.get(id=request.session['userid'])
+    rec_cat = Category.objects.get(name = request.POST ['category'])
     new_recipe = Recipe.objects.create(
         rec_name = request.POST ['rec_name'],
-        category = request.POST ['category'],
         prep_time = request.POST ['prep_time'],
         procedure = request.POST ['procedure'],
         ingredients = request.POST ['ingredients'],
         creator = user,
+        category = rec_cat,
     )
+    rec_cat.save()
+    user.save()
     request.session['rec_id'] = new_recipe.id
     return redirect('/photo_up')
 
@@ -91,7 +94,8 @@ def photo_up(request):
             # Get the current instance object to display in the template
             img_obj = form.instance
             recipe = Recipe.objects.get(id=request.session['rec_id']) 
-            img_obj.for_recipe.add(recipe)
+            this_pic = Image.objects.get(title=img_obj.title)
+            this_pic.for_recipe = recipe
             user = User.objects.get(id=request.session['userid'])
             x = recipe.creator.id
             y = recipe.ingredients.split('\n')
@@ -105,7 +109,7 @@ def photo_up(request):
             }
             recipe.save()
             user.save()
-            img_obj.save()
+            this_pic.save()
             return render(request, 'addNotes.html', context)
     else:
         form = ImageForm()
@@ -123,17 +127,21 @@ def my_recipes(request):
     user = User.objects.get(id=request.session['userid'])
     recipes = Recipe.objects.all()
     my_recs = Recipe.objects.filter(creator=user)
+    cats = Category.objects.all()
     context = {
         'recipes': recipes,
         'user': user,
         'user_recipes': my_recs.order_by('category', 'rec_name'),
+        'cats':cats,
     }
     return render(request, 'myRecipes.html', context)
 
 def all_rec(request):
     recipes = Recipe.objects.order_by('category', 'rec_name')
+    cats = Category.objects.all()
     context = {
         'recipes':recipes,
+        'cats':cats,
     }
     return render(request, 'allRecipes.html', context)
 
@@ -143,6 +151,7 @@ def recipe(request, rec_id):
     recipe = Recipe.objects.get(id=rec_id)
     user = User.objects.get(id=request.session['userid'])
     x = recipe.creator.id
+    print(recipe.images)
     if recipe.images.exists():
         pic = recipe.images.get()
     else:
@@ -171,9 +180,10 @@ def edit_rec(request, rec_id):
     return render(request, 'editRecipe.html', context)
 
 def save_edit(request, rec_id):
+    cat = Category.objects.filter(name=request.POST['category'])
     this_recipe = Recipe.objects.get(id=rec_id)
     this_recipe.rec_name = request.POST['rec_name']
-    this_recipe.category = request.POST['category']
+    this_recipe.category = cat
     this_recipe.prep_time = request.POST['prep_time']
     this_recipe.procedure = request.POST['procedure']
     this_recipe.ingredients = request.POST['ingredients']

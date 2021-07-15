@@ -1,11 +1,12 @@
 import random
-from .models import Image
+from .models import Image, Recipe
 
 
 
 def categories_processor(request):
-    categories = ['Breakfast', 'Salads', 'Shares', 'Pastas', 'Sandwiches', 'Meat/Poultry', 'Fish/Shell', 'Soup/Sauce', 'Dessert', 'Pizza', 'Sides']
-    return {'categories': categories}
+    categories = ['Breakfast', 'Salad', 'Shares', 'Pasta', 'Sandwich', 'Meat', 'Fish', 'Sauce', 'Dessert', 'Pizza']
+    return {'categories': categories
+    }
 
 def image_processor(request):
     items = list(Image.objects.all())

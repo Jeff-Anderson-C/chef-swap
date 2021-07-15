@@ -39,11 +39,18 @@ class User(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     objects = UserManager()
+    def __str__(self):
+        return self.first_name
+
+class Category(models.Model):
+    name = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Recipe(models.Model):
     rec_name = models.CharField(max_length=255)
-    category = models.CharField(max_length=45)
+    category = models.ForeignKey(Category, related_name='cat_recipes', max_length=45, on_delete=models.CASCADE)
     prep_time = models.CharField(max_length=20)
     procedure = models.CharField(max_length=455, null=True)
     ingredients = models.TextField(max_length=455, null=True)
@@ -60,6 +67,8 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     for_recipe = models.ForeignKey(Recipe, related_name='images', on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return self.title
 
 
 
