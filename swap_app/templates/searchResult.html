@@ -1,0 +1,25 @@
+{% extends 'base_rec.html' %}
+{% block content %}
+                <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-4" >
+                    {% if searched %}
+                        <h1>You searched for: {{searched}}</h1>
+                        <br>
+                        <h3>My Recipes</h3>
+                        {% for recipe in recipes %}
+                            {% if recipe.creator.id == user.id %}
+                                <a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <br><br><br>
+                        <h3>All Other Recipes</h3>
+                        {% for recipe in recipes %}
+                            {% if recipe.creator != user.id %}
+                                <a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a>
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <h1>Try search again</h1>
+                    {% endif %}
+                </div>
+{% endblock %}

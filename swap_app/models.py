@@ -39,14 +39,11 @@ class User(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     objects = UserManager()
-    def __str__(self):
-        return self.first_name
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 class Recipe(models.Model):
     rec_name = models.CharField(max_length=255)
@@ -60,6 +57,16 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class TestRec(models.Model):
+    rec_name = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, related_name='test_cat_recipes', max_length=45, on_delete=models.CASCADE)
+    prep_time = models.CharField(max_length=20)
+    procedure = models.CharField(max_length=455, null=True)
+    ingredients = models.TextField(max_length=455, null=True)
+    creator = models.ForeignKey(User, related_name='test_recipes', on_delete=models.CASCADE, null=True)
+    notes = models.TextField(max_length=455, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Image(models.Model):
     title = models.CharField(max_length=200)
@@ -70,7 +77,14 @@ class Image(models.Model):
     def __str__(self):
         return self.title
 
-
+class TestImg(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images', default='default.jpg')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    for_recipe = models.ForeignKey(TestRec, related_name='test_images', on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return self.title
 
 class Suggestion(models.Model):
     rec_name = models.CharField(max_length=255)

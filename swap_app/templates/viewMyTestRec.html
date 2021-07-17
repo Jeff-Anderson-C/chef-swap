@@ -1,0 +1,29 @@
+{% extends 'base_kit.html' %}
+{% block content %}
+                <div class="d-flex justify-content-around mb-4 mt-4">
+                    <div class="col-5 shadow-lg p-3 mb-5 bg-body rounded mt-4">
+                        <form action="/save_test_rec_edit/{{recipe.id}}" method="POST" class="">
+                            {% csrf_token %}
+                            <label for="rec_name" class="form-label fw-bold">Recipe name</label>
+                            <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
+                            <label for="category" class="form-label fw-bold">Category</label>
+                            <select class="form-select" name="category">
+                                {% for cat in categories %}
+                                    <option value="{{cat}}">{{cat}}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="prep_time" class="form-label fw-bold">Prep Time</label>
+                            <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
+                            <label for="procedure" class="form-label fw-bold">Procedure</label>
+                            <textarea name="procedure" class="form-control" id="" cols="30" rows="5">{{recipe.procedure}}</textarea>
+                            <label for="ingredients" class="form-label fw-bold">Ingredients</label>
+                            <textarea name="ingredients" class="form-control" id="" cols="30" rows="5">{{recipe.ingredients}}</textarea>
+                            <button class="mt-4 mb-4 btn btn-dark" type="submit">Submit</button>
+                    </div>
+                    <div class="col-5 shadow-lg p-3 mb-5 bg-body rounded mt-4">
+                        <label for="notes" class="form-label fw-bold">Notes</label>
+                        <textarea name="notes" class="form-control" id="" cols="30" rows="21">{{recipe.notes}}</textarea>
+                    </form>
+                    </div>
+                </div>
+{% endblock %}

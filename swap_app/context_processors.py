@@ -1,5 +1,5 @@
 import random
-from .models import Image, Recipe
+from .models import Image, Recipe, User
 
 
 

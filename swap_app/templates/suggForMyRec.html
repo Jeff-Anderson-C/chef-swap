@@ -1,52 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chef Swap</title>
-        <meta name="description" content="Join groups of other chefs to collaborate on your 
-        recipes, find inspiration, as well as show off your skills, and your knife roll">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-5">
-            <div class="container p-3">
-                <div class="swap_head d-flex align-bottom">
-                    <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
-                </div>
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
-                    <div class="container-fluid">
-                        <a class="col-2 navbar-brand" href="#">Chef {{user.first_name}}'s {{recipe.rec_name}}</a>
-                        <div class="collapse navbar-collapse" id="navbarText">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>                            </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/favRecipes">Favorite Recipes</a>
-                                </li>
-                                <li class="nav-item">                                    <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/dash">Home</a>
-                                </li>
-                            </ul>
-                            <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
+{% extends 'base_rec.html' %}
+{% block content %}
                 <div class="container d-flex justify-content-around">
-                    <div class="col-4 border border-dark border-4 rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-4">
                         <p><h1>{{this_sugg.rec_name}}</h1><h3>(suggested edit)</h3></p>
                         <p>{{this_sugg.category}} {{this_sugg.prep_time}}</p>
                         <ul>
@@ -55,33 +10,28 @@
                             {% endfor %}
                         </ul>
                         {{this_sugg.procedure}}
-                        <br>
-                        <br>
-                        <p><a href="/destroy_sugg/{{this_sugg.id}}" class="btn btn-dark">Don't Change</a></p>
+                        <br><br><br><br><br><br><br><br><br><br><br>
+                        <div class="d-flex  justify-content-between mb-3">
+                            <a href="/destroy_sugg/{{this_sugg.id}}" class="btn btn-dark">No Change</a>
+                            <a href="#" class="btn btn-dark">Keep Changes</a>
+                            <a href="#" class="btn btn-dark">Test Kitchen</a>
+                        </div>
                     </div>
-                    <div class="col-4 border border-dark border-4 rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-4">
                         <form action="/save_edit/{{recipe.id}}" method="POST">
                             {% csrf_token %}
-                            <label for="rec_name" class="form-label">Recipe name</label>
+                            <label for="rec_name" class="form-label fw-bold">Recipe name</label>
                             <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
-                            <label for="category" class="form-label">Category</label>
-                            <input type="text" name="category" class="form-control" value="{{recipe.category}}">
-                            <label for="prep_time" class="form-label">Prep Time</label>
+                            <label for="category" class="form-label fw-bold">Category</label>
+                            <input type="text" name="category" class="form-control" value="{{recipe.category.name}}">
+                            <label for="prep_time" class="form-label fw-bold">Prep Time</label>
                             <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
-                            <label for="procedure" class="form-label">Procedure</label>
+                            <label for="procedure" class="form-label fw-bold">Procedure</label>
                             <textarea name="procedure" id="" cols="30" class="form-control"rows="5">{{recipe.procedure}}</textarea>
-                            <label for="ingredients" class="form-label">Ingredients</label>
+                            <label for="ingredients" class="form-label fw-bold">Ingredients</label>
                             <textarea name="ingredients" id="" cols="30" class="form-control"rows="5">{{recipe.ingredients}}</textarea>
                             <button type="submit" class="btn btn-dark mt-2">Submit</button>
                         </form>
                     </div>
                 </div>
-            </div>
-            <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
-                <div class="container">
-                    <span class="text-muted"></span>
-                </div>
-            </footer>
-        </div>
-    </body>
-</html>
+{% endblock %}

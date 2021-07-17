@@ -1,83 +1,29 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chef Swap</title>
-        <meta name="description" content="Join groups of other chefs to collaborate on your 
-        recipes, find inspiration, as well as show off your skills, and your knife roll">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    </head>
-    <body>
-        <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-5">
-            <div class="container p-3">
-                <div class="swap_head d-flex align-bottom">
-                    <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
-                </div>
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
-                    <div class="container-fluid">
-                        <a class="col-2 navbar-brand" href="#">Chef {{recipe.creator.first_name}}'s {{recipe.rec_name}}</a>
-                        <div class="collapse navbar-collapse" id="navbarText">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>                            </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/favRecipes">Favorite Recipes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/dash">Home</a>
-                                </li>
-                            </ul>
-                            <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
-                <div class="d-flex justify-content-around mb-4 mt-4">
-                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
-                        <p><h1>{{recipe.rec_name}}</h1></p>
-                        <p>{{recipe.category}} {{recipe.prep_time}}</p> 
-                        <ul>
-                            {% for i in ing_list %}
-                                <li>{{i}}</li>
-                            {% endfor %}
-                        </ul>
-                        {{recipe.procedure}}
-                        <br>
-                        <br>
-                        <a href="/suggest/{{recipe.id}}" class="btn btn-dark">Collaborate</a>
-                        <a href="/make_fav/{{recipe.id}}" class="btn btn-dark">Favorite</a>
-                    </div>
-                    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
-                        {{recipe.notes}}
-                    </div>
-                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
-                        {% if pic == None %}
-                            <img class="img-fluid" src="/media/images/default.jpg" alt="">
-                        {% else %}
-                            <img src="{{pic.image.url}}" class="d-block w-100" alt="...">
-                        {% endif %}
-                    </div>
-                </div>
-                <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
-                    <div class="container">
-                        <span class="text-muted"></span>
-                    </div>
-                </footer>
-            </div>
-        </div>
-    </body>
-</html>
+{% extends 'base_rec.html' %}
+{% block content %}
+<div class="d-flex justify-content-around mb-4 mt-4">
+    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+        <p><h1>{{recipe.rec_name}}</h1></p>
+        <p>{{recipe.category.name}} {{recipe.prep_time}}</p> 
+        <ul>
+            {% for i in ing_list %}
+                <li>{{i}}</li>
+            {% endfor %}
+        </ul>
+        {{recipe.procedure}}
+        <br>
+        <br>
+        <a href="/suggest/{{recipe.id}}" class="btn btn-dark">Collaborate</a>
+        <a href="/make_fav/{{recipe.id}}" class="btn btn-dark">Favorite</a>
+    </div>
+    <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+        {{recipe.notes}}
+    </div>
+    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+        {% if pic == None %}
+            <img class="img-fluid" src="/media/images/default.jpg" alt="">
+        {% else %}
+            <img src="{{pic.image.url}}" class="d-block w-100" alt="...">
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
