@@ -7,3 +7,4 @@ class ImageForm(forms.ModelForm):
         model = Image
         fields = ('title', 'image')
 
+

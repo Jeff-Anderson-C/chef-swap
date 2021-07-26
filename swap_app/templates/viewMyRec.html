@@ -1,28 +1,30 @@
 {% extends 'base_rec.html' %}
 {% block content %}
                 <div class="d-flex justify-content-around mb-4 mt-4">
-                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 mt-2 d-flex bg-body rounded flex-column">
                         <p><h1>{{recipe.rec_name}}</h1></p>
-                        <p>{{recipe.category.name}} {{recipe.prep_time}}</p> 
-                        <ul>
+                        <p>Category: {{recipe.category.name}}</p>
+                        <p>Prep time: {{recipe.prep_time}}</p> 
+                        <ul>Ingredients:
                             {% for i in ing_list %}
                                 <li>{{i}}</li>
                             {% endfor %}
-                        </ul>
+                        </ul>Procedure:
                         {{recipe.procedure}}
                         <br>
                         <br>
-                        <a href="/edit/{{recipe.id}}" class="btn btn-dark">Edit</a>
+                        <a href="/edit/{{recipe.id}}" class="btn btn-dark mt-auto">Edit</a>
                     </div>
                     <div class="col-3 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
                         {{recipe.notes}}
                     </div>
-                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 p-2">
+                    <div class="col-4 shadow-lg p-3 mb-5 bg-body rounded mt-2 d-flex flex-column">
                         {% if pic == None %}
                             <img class="img-fluid" src="/media/images/default.jpg" alt="">
                         {% else %}
-                            <img src="{{pic.image.url}}" class="d-block w-100" alt="...">
+                            <img src="{{pic.image.url}}" class="d-block w-100 mb-3" alt="...">
                         {% endif %}
+                        <a href="/change_pic/{{recipe.id}}" class="btn btn-dark mt-auto">change pic</a>
                     </div>
                 </div>
 {% endblock %}

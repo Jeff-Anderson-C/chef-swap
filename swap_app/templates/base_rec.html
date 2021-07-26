@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <style>
             body {
-                background-image: url("{% static 'img/pine_border.jpg' %}");
+                background-image: url("{% static 'img/mint.jpg' %}");
                 background-repeat: no-repeat;
                 background-attachment: fixed;  
                 background-size: cover;
@@ -25,12 +25,14 @@
             </style>
     </head>
     <body>
-        <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-4">
-            <div class="container p-3">
-                <div class="swap_head d-flex align-bottom">
-                    <span class="align-bottom"><h1>Chef Swap</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
+        <div class="container mt-4">
+            <div class="">
+                <div class="swap_head d-flex align-top">
+                    <span class="text-light"><h1 class="fw-bold">Chef Sourced</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
+                    <img src="{% static 'img/logo-icon.png' %}" class="ms-auto mb-2" style="width: 7rem" alt="">
                 </div>
-                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded">
+                <div>
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded border border-light border-2">
                         <div class="container-fluid">
                             <a class="col-1 navbar-brand text-success" href="#">Chef {{user.first_name}}</a>
                             <div class="collapse navbar-collapse" id="navbarText">
@@ -63,12 +65,13 @@
                             </div>
                         </div>
                     </nav>
+                </div>
                         {% block content %}
 
 
 
                         {% endblock %}
-                <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4 rounded">
+                <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4 rounded border border-light border-2">
                     <div class="container">
                         <span class="text-muted"></span>
                     </div>

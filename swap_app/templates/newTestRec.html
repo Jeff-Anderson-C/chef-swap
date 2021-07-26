@@ -9,9 +9,9 @@
             <input type="text" name="rec_name" class="form-control mb-2">
             <label class="form-label fw-bold" for="category"><h3>Category</h3></label>
             <select class="form-select mb-2" name="category">
-                {% for cat in categories %}
-                    <option value="{{cat}}">{{cat}}</option>
-                {% endfor %} </select>
+            {% for cat in categories %}
+                <option value="{{cat}}">{{cat}}</option>
+            {% endfor %} </select>
             <label for="prep_time" class="form-label fw-bold"><h3>Prep Time</h3></label>
             <input type="text" name="prep_time" class="form-control mb-2">
             <label for="procedure" class="form-label fw-bold"><h3>Procedure</h3></label>

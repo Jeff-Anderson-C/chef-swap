@@ -9,6 +9,6 @@ def categories_processor(request):
     }
 
 def image_processor(request):
-    items = list(Image.objects.all())
+    items = list(Image.objects.filter(for_recipe__pk__isnull=False))
     food_rand_imgs = random.sample(items, 3)
     return {'food_rand_imgs':food_rand_imgs}

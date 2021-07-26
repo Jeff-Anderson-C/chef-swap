@@ -4,3 +4,8 @@
 .swap_head {
     font-family: 'Montserrat', sans-serif;
 }
+
+.opacity {
+    opacity: 0.6 im !important;
+    background-color: blue !important;
+}

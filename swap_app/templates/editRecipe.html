@@ -1,23 +1,29 @@
 {% extends 'base_rec.html' %}
 {% block content %}
-<div class="container shadow-lg p-3 mb-5 bg-body rounded mt-5">
-    <form action="/save_edit/{{recipe.id}}" method="POST" class="mt-4">
+
+<div class="container">
+    <form action="/save_edit/{{recipe.id}}" method="POST" class="mt-4 mb-2 d-flex justify-content-between">
         {% csrf_token %}
-        <label for="rec_name" class="form-label fw-bold">Recipe name</label>
-        <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
-        <label for="category" class="form-label fw-bold">Category</label>
-        <select class="form-select" name="category">
-            {% for cat in categories %}
-                <option value="{{cat}}">{{cat}}</option>
-            {% endfor %}
-        </select>
-        <label for="prep_time" class="form-label fw-bold">Prep Time</label>
-        <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
-        <label for="procedure" class="form-label fw-bold">Procedure</label>
-        <textarea name="procedure" class="form-control" id="" cols="30" rows="5">{{recipe.procedure}}</textarea>
-        <label for="ingredients" class="form-label fw-bold">Ingredients</label>
-        <textarea name="ingredients" class="form-control" id="" cols="30" rows="5">{{recipe.ingredients}}</textarea>
-        <button class="mt-4 mb-4 btn btn-dark" type="submit">Submit</button>
+        <div class="col-5 mt-3 p-3 mb-5">
+            <label for="rec_name" class="form-label fw-bold text-light"><h3>Recipe Name</h3></label>
+            <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
+            <label class="form-label fw-bold text-light mt-3" for="category"><h3>Category</h3></label>
+            <select class="form-select" name="category">
+                {% for cat in categories %}
+                    <option value="{{cat}}">{{cat}}</option>
+                {% endfor %}
+            </select>
+            <label for="prep_time" class="form-label fw-bold text-light mt-3"><h3>Prep Time</h3></label>
+            <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
+            <label for="procedure" class="form-label fw-bold text-light mt-3"><h3>Procedure</h3></label>
+            <textarea name="procedure" class="form-control" id="" cols="30" rows="5">{{recipe.procedure}}</textarea>
+            <label for="ingredients" class="form-label fw-bold text-light mt-3"><h3>Ingredients</h3></label>
+            <textarea name="ingredients" class="form-control" id="" cols="30" rows="5">{{recipe.ingredients}}</textarea>
+        </div>
+        <div class="col-5 mt-3 p-3 mb-5">
+            <h3 class="fw-bold text-light">Notes</h3></p> <textarea name="notes" class="form-control" id="" cols="50" rows="26">{{recipe.notes}}</textarea>
+            <button class="mt-4 btn btn-dark border border-2 border-light" type="submit">Submit</button>
+        </div>
     </form>
 </div>
 {% endblock %}

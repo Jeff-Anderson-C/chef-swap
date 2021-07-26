@@ -74,17 +74,29 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     for_recipe = models.ForeignKey(Recipe, related_name='images', on_delete=models.CASCADE, null=True)
+    profile_pic = models.ForeignKey(User, related_name='profile_pics', on_delete=models.CASCADE, null=True)
+    knife_roll_pic = models.ForeignKey(User, related_name='kn_ro_pics', on_delete=models.CASCADE, null=True)
+    wall_pic = models.ForeignKey(User, related_name='wall_pics', on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.title
 
-class TestImg(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='images', default='default.jpg')
+class Post(models.Model):
+    post_title = models.CharField(max_length=45)
+    content = models.CharField(max_length=455)
+    post_image = models.OneToOneField(Image, on_delete=models.CASCADE, primary_key=True,)
+    poster = models.ForeignKey(User, related_name='my_posts', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    for_recipe = models.ForeignKey(TestRec, related_name='test_images', on_delete=models.CASCADE, null=True)
-    def __str__(self):
-        return self.title
+
+class Group(models.Model):
+    name = models.CharField(max_length=45)
+    desc = models.CharField(max_length=255)
+    member = models.ManyToManyField(User, related_name='group_members')
+    creator = models.ForeignKey(User, related_name='created_groups', on_delete=models.CASCADE, null=True)
+    gr_admin = models.ManyToManyField(User, related_name='admin_members', default=None)
+    active_group = models.CharField(max_length=3)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 class Suggestion(models.Model):
     rec_name = models.CharField(max_length=255)
