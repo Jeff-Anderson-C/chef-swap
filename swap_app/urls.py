@@ -46,7 +46,11 @@ urlpatterns = [
     path('profile_edit_save', views.profile_edit_save),
     path('roll_manage', views.roll_manage), 
     path('groups', views.groups), 
+    path('view_group/<int:group_id>', views.view_group),
     path('messages', views.messages), 
 
     path('create_group', views.create_group),
+    path('join_request/<int:group_id>', views.join_request),
+    path('search_chefs', views.search_chefs),
+    path('other_prof/<int:chef_id>', views.other_prof),
 ]

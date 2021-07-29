@@ -45,6 +45,16 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Group(models.Model):
+    name = models.CharField(max_length=45)
+    desc = models.CharField(max_length=255)
+    member = models.ManyToManyField(User, related_name='group_members')
+    creator = models.ForeignKey(User, related_name='created_groups', on_delete=models.CASCADE, null=True)
+    gr_admin = models.ManyToManyField(User, related_name='admin_members', default=None)
+    active_group = models.CharField(max_length=3)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
 class Recipe(models.Model):
     rec_name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='cat_recipes', max_length=45, on_delete=models.CASCADE)
@@ -53,6 +63,7 @@ class Recipe(models.Model):
     ingredients = models.TextField(max_length=455, null=True)
     creator = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE, null=True)
     favorite = models.ManyToManyField(User, related_name='fav_recipes')
+    group_rec = models.ManyToManyField(Group, related_name='group_recs')
     notes = models.TextField(max_length=455, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -88,15 +99,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-class Group(models.Model):
-    name = models.CharField(max_length=45)
-    desc = models.CharField(max_length=255)
-    member = models.ManyToManyField(User, related_name='group_members')
-    creator = models.ForeignKey(User, related_name='created_groups', on_delete=models.CASCADE, null=True)
-    gr_admin = models.ManyToManyField(User, related_name='admin_members', default=None)
-    active_group = models.CharField(max_length=3)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+
 
 class Suggestion(models.Model):
     rec_name = models.CharField(max_length=255)
@@ -106,5 +109,13 @@ class Suggestion(models.Model):
     ingredients = models.TextField(max_length=455)
     link = models.OneToOneField(Recipe, related_name='links', on_delete=models.CASCADE)
     helper = models.ForeignKey(User, related_name='help', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Invite(models.Model):
+    sender = models.OneToOneField(User, on_delete=models.CASCADE)
+    for_group = models.OneToOneField(Group, on_delete=models.CASCADE)
+    msg_txt = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

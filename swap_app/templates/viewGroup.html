@@ -1,0 +1,23 @@
+{% extends 'base_profile.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="container bg-body m-5" style="width: 500px;" >
+        <div class="container bg-light p-3">
+            <p> Group name: {{group.name}}</p>
+            <p>Group Description: {{group.desc}}</p>   
+            <p>Group Leader: {{group.creator.first_name}} {{group.creator.last_name}}</p>
+            <p>Activity: {{group.active_group}}</p>
+            <p>Started: {{group.created_at}}</p>
+        </div>
+        <div class="p-3">
+            <a href="/join_request/{{group.id}}"><button class="btn btn-dark">Join Group</button></a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

@@ -25,9 +25,9 @@
             </style>
     </head>
     <body>
-        <div class="container mt-4">
-            <div class="">
-                <div class="swap_head d-flex align-top">
+        <div class="mt-2">
+            
+                <div class="swap_head d-flex align-top p-4">
                     <span class="text-light"><h1 class="fw-bold">Chef Sourced</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
                     <img src="{% static 'img/logo-icon.png' %}" class="ms-auto mb-2" style="width: 7rem" alt="">
                 </div>
@@ -38,15 +38,19 @@
                             <div class="collapse navbar-collapse" id="navbarText">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>                            </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
+                                        <a class="nav-link active" aria-current="page" href="/my_recipes">My Recipes</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="/favRecipes">Favorite Recipes</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/favRecipes">Group Recipes</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="/new_rec">New Recipe</a>
@@ -76,7 +80,7 @@
                         <span class="text-muted"></span>
                     </div>
                 </footer>
-            </div>
+            
         </div>
     </body>
 </html> 

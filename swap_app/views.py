@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages 
-from .models import User, Recipe, Suggestion, Image, Category, TestRec, Post, Group
+from .models import User, Recipe, Suggestion, Image, Category, TestRec, Post, Group, Invite
 import bcrypt
 from .forms import ImageForm
 import random 
@@ -62,15 +62,19 @@ def dash(request):
 def new_rec(request):
     user = User.objects.get(id=request.session['userid'])
     cats = Category.objects.all()
+    groups = Group.objects.filter(member=user)
     context = {
         'user':user, 
         'cats':cats,
+        'groups':groups,
     }
     return render(request, 'newRecipe.html', context)
 
 def create_new(request):
     user = User.objects.get(id=request.session['userid'])
     rec_cat = Category.objects.get(name = request.POST ['category'])
+    if request.session ['group_rec']:
+        rec_group = Group.objects.get(name = request.session ['group_rec'])
     new_recipe = Recipe.objects.create(
         rec_name = request.POST ['rec_name'],
         prep_time = request.POST ['prep_time'],
@@ -80,6 +84,9 @@ def create_new(request):
         creator = user,
         category = rec_cat,
     )
+    if request.session ['group_rec']:
+        new_recipe.group_rec = rec_group
+    new_recipe.save()
     rec_cat.save()
     user.save()
     request.session['rec_id'] = new_recipe.id
@@ -322,9 +329,9 @@ def search_recipes(request):
         searched = request.POST['searched']
         user = User.objects.get(id=request.session['userid'])
         recipes = Recipe.objects.filter(rec_name__contains=searched)
-        return render(request, 'searchResult.html', {'searched':searched, 'recipes':recipes, 'user':user})
+        return render(request, 'searchRecRes.html', {'searched':searched, 'recipes':recipes, 'user':user})
     else:
-        return render(request, 'searchResult.html', {})
+        return render(request, 'searchRecRes.html', {})
 
 def remove_rec(request, rec_id):
     this_recipe = Recipe.objects.get(id=rec_id)
@@ -339,7 +346,7 @@ def delete_sugg(request, sugg_id):
 def prof_dash(request):
     user = User.objects.get(id=request.session['userid'])
     posts = Post.objects.filter(poster=request.session['userid']).order_by('-created_at')
-    groups = Group.objects.all()
+    groups = Group.objects.filter(member=user)
     member_list = []
     for group in groups:
         for member in group.member.all().exclude(id=user.id):
@@ -354,6 +361,7 @@ def prof_dash(request):
         'prof_pic':prof_pic,
         'posts':posts,
         'member_list':member_list,
+        'groups':groups,
     }
     return render(request, 'profDash.html', context)
 
@@ -370,6 +378,7 @@ def profile_edit_save(request):
     user.last_name = request.POST ['last_name']
     user.email = request.POST ['email']
     user.save()
+    return redirect('/my_profile')
 
 def pr_photo_up(request):
     if request.method == 'POST':
@@ -439,6 +448,61 @@ def create_group(request):
         ad_user = User.objects.get(email = request.POST ['admin'])
         new_group.gr_admin.set(ad_user)
     return redirect('/groups')
+
+def view_group(request, group_id):
+    user = User.objects.get(id=request.session ['userid'])
+    group = Group.objects.get(id=group_id)
+
+    return render(request, 'viewGroup.html', {'group':group, 'user':user})
+
+def join_request(request, group_id):
+    user = User.objects.get(id=request.session ['userid'])
+    group = Group.objects.get(id=group_id)
+    if group.member.filter(id=user.id):
+        return redirect('/prof_dash')
+    new_join = Invite.objects.create (
+        sender = user,
+        for_group = group, 
+        msg_txt = request.POST ['msg_txt']
+    )
+    return redirect('/prof_dash')
+
+def search_chefs(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        user = User.objects.get(id=request.session['userid'])
+        chefs = User.objects.filter(first_name__contains=searched)
+        return render(request, 'searchChefRes.html', {'searched':searched, 'user':user, 'chefs':chefs})
+    else:
+        return render(request, 'searchChefRes.html', {})
+
+
+def other_prof(request, chef_id):
+    user = User.objects.get(id=chef_id)
+    posts = Post.objects.filter(poster=chef_id).order_by('-created_at')
+    groups = Group.objects.filter(creator=user)
+    member_list = []
+    for group in groups:
+        for member in group.member.all().exclude(id=user.id):
+            if member not in member_list:
+                member_list.append(member)            
+    if user.profile_pics.exists():
+        prof_pic = user.profile_pics.last()
+    else:
+        prof_pic = None
+    context = {
+        'user':user,
+        'prof_pic':prof_pic,
+        'posts':posts,
+        'member_list':member_list,
+        'groups':groups,
+    }
+    
+    return render(request, 'otherProf.html', context)
+
+
+
+
 
 def messages(request):
     return render(request, 'message.html')

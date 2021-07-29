@@ -13,6 +13,13 @@
                 <option value="{{cat.name}}">{{cat.name}}</option>
             {% endfor %}
             </select>
+            <label class="form-label fw-bold text-light mt-3" for="group_rec"><h3>Group</h3></label>
+            <select class="form-select" name="group_rec">
+                <option value="all_recipes">All Recipes</option>
+            {% for group in groups %}
+                <option value="{{group.name}}">{{group.name}}</option>
+            {% endfor %}
+            </select>
             <label for="prep_time" class="form-label fw-bold text-light mt-3"><h3>Prep Time</h3></label>
             <input type="text" name="prep_time" class="form-control" value="{{recipe.prep_time}}">
             <label for="procedure" class="form-label fw-bold text-light mt-3"><h3>Procedure</h3></label>

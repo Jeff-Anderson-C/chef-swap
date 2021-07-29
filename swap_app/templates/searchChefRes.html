@@ -1,0 +1,19 @@
+{% extends 'base_profile.html' %}
+{% block content %}
+
+<div class="container shadow-lg p-3 mb-5 bg-body rounded mt-4" >
+    {% if searched %}
+        <h1>You searched for: {{searched}}</h1>
+        <br>
+        <h3>Chefs</h3>
+        {% for chef in chefs %}
+                <a href="/other_prof/{{chef.id}}" class="text-decoration-none text-success">{{chef.first_name}} {{chef.last_name}}</a>
+        {% endfor %}
+    {% else %}
+        <h1>No results for {{searched}}. Try your search again.</h1>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
