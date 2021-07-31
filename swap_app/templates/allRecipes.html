@@ -19,7 +19,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="d-flex justify-content-between mt-3 mb-3" >
+                <div class="d-flex justify-content-around mt-3 mb-3" >
                     <div class="col-6 border border-light border-2 p-2" > 
                         <table class="table table-dark table-striped p-3 bg-body rounded ">
                             <thead>
@@ -38,7 +38,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-6 p-2 border border-light border-2" data-bs-ride="carousel">
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-5 p-2 border border-light border-2" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             {% for pic in food_rand_imgs %}
                                 {% if forloop.first %}

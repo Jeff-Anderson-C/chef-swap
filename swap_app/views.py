@@ -59,6 +59,17 @@ def dash(request):
     }
     return render(request, 'dash.html', context)
 
+
+
+
+
+
+
+
+
+
+# Recipes
+
 def new_rec(request):
     user = User.objects.get(id=request.session['userid'])
     cats = Category.objects.all()
@@ -73,8 +84,7 @@ def new_rec(request):
 def create_new(request):
     user = User.objects.get(id=request.session['userid'])
     rec_cat = Category.objects.get(name = request.POST ['category'])
-    if request.session ['group_rec']:
-        rec_group = Group.objects.get(name = request.session ['group_rec'])
+    rec_group = Group.objects.get(name = request.POST ['group_rec'])
     new_recipe = Recipe.objects.create(
         rec_name = request.POST ['rec_name'],
         prep_time = request.POST ['prep_time'],
@@ -82,13 +92,10 @@ def create_new(request):
         ingredients = request.POST ['ingredients'],
         notes = request.POST ['notes'],
         creator = user,
-        category = rec_cat,
+        category = rec_cat, 
+        group_rec = rec_group,
     )
-    if request.session ['group_rec']:
-        new_recipe.group_rec = rec_group
     new_recipe.save()
-    rec_cat.save()
-    user.save()
     request.session['rec_id'] = new_recipe.id
     return redirect('/photo_up')
 
@@ -106,7 +113,7 @@ def photo_up(request):
             # Get the current instance object to display in the template
             img_obj = form.instance
             recipe = Recipe.objects.get(id=request.session['rec_id']) 
-            this_pic = Image.objects.get(title=img_obj.title)
+            this_pic = Image.objects.get(pk=img_obj.pk)
             this_pic.for_recipe = recipe
             user = User.objects.get(id=request.session['userid'])
             recipe.save()
@@ -134,7 +141,8 @@ def my_recipes(request):
 
 def all_rec(request):
     user = User.objects.get(id=request.session['userid'])
-    recipes = Recipe.objects.order_by('category', 'rec_name')
+    allrec = Group.objects.get(name='All Recipes')
+    recipes = Recipe.objects.filter(group_rec=allrec).order_by('category', 'rec_name')
     cats = Category.objects.all()
     context = {
         'recipes':recipes,
@@ -142,8 +150,6 @@ def all_rec(request):
         'user':user,
     }
     return render(request, 'allRecipes.html', context)
-
-
 
 def recipe(request, rec_id):
     recipe = Recipe.objects.get(id=rec_id)
@@ -166,24 +172,28 @@ def recipe(request, rec_id):
     else:
         return render(request, 'viewOthRec.html', context)
 
-
 def edit_rec(request, rec_id):
     user = User.objects.get(id=request.session['userid'])
+    groups = Group.objects.filter(member=user)
     recipe = Recipe.objects.get(id=rec_id)
     context = {
         'recipe':recipe,
         'user':user,
+        'groups':groups,
     }
     return render(request, 'editRecipe.html', context)
 
 def save_edit(request, rec_id):
     cat = Category.objects.get(name=request.POST['category'])
+    rec_group = Group.objects.get(name = request.POST ['group_rec'])
     this_recipe = Recipe.objects.get(id=rec_id)
     this_recipe.rec_name = request.POST['rec_name']
     this_recipe.category = cat
     this_recipe.prep_time = request.POST['prep_time']
     this_recipe.procedure = request.POST['procedure']
     this_recipe.ingredients = request.POST['ingredients']
+    rec_group.group_recs.add(this_recipe)
+    rec_group.save()
     this_recipe.save() 
     return redirect('/my_recipes')
 
@@ -257,6 +267,34 @@ def make_fav(request, rec_id):
     user.fav_recipes.add(recipe)
     return redirect('/favRecipes')
 
+def group_recs(request):
+    user = User.objects.get(id=request.session ['userid'])
+    groups = Group.objects.filter(member=user).exclude(name="All Recipes")
+
+    return render(request, 'groupRecs.html', {'groups':groups, 'user':user})
+
+def search_recipes(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        user = User.objects.get(id=request.session['userid'])
+        recipes = Recipe.objects.filter(rec_name__contains=searched).filter(group_rec=2)
+        my_recipes = Recipe.objects.filter(rec_name__contains=searched).filter(creator=user)
+        return render(request, 'searchRecRes.html', {'searched':searched, 'recipes':recipes, 'user':user, 'my_recipes':my_recipes})
+    else:
+        return render(request, 'searchRecRes.html', {})
+
+def remove_rec(request, rec_id):
+    this_recipe = Recipe.objects.get(id=rec_id)
+    this_recipe.delete()
+    return redirect('/my_recipes')
+
+
+
+
+
+
+# Test Kitchen
+
 def test_kit(request):
     user = User.objects.get(id=request.session['userid'])
     test_recs = TestRec.objects.filter(creator=user)
@@ -284,7 +322,7 @@ def view_test_rec(request, rec_id):
 
 def save_test_rec(request):
     user = User.objects.get(id=request.session['userid'])
-    rec_cat = Category.objects.filter(name = request.POST ['category'])
+    rec_cat = Category.objects.get(name = request.POST ['category'])
     new_recipe = TestRec.objects.create(
         rec_name = request.POST ['rec_name'],
         prep_time = request.POST ['prep_time'],
@@ -323,30 +361,18 @@ def save_to_main(request, test_id):
     test_rec.delete()
     return redirect('/my_recipes')
 
-
-def search_recipes(request):
-    if request.method == 'POST':
-        searched = request.POST['searched']
-        user = User.objects.get(id=request.session['userid'])
-        recipes = Recipe.objects.filter(rec_name__contains=searched)
-        return render(request, 'searchRecRes.html', {'searched':searched, 'recipes':recipes, 'user':user})
-    else:
-        return render(request, 'searchRecRes.html', {})
-
-def remove_rec(request, rec_id):
-    this_recipe = Recipe.objects.get(id=rec_id)
-    this_recipe.delete()
-    return redirect('/my_recipes')
-
 def delete_sugg(request, sugg_id):
     sugg = Suggestion.objects.get(id=sugg_id)
     sugg.delete()
     return redirect('/my_suggs')
 
+
+# Knife roll/profile
+
 def prof_dash(request):
     user = User.objects.get(id=request.session['userid'])
     posts = Post.objects.filter(poster=request.session['userid']).order_by('-created_at')
-    groups = Group.objects.filter(member=user)
+    groups = Group.objects.filter(member=user).exclude(name='All Recipes')
     member_list = []
     for group in groups:
         for member in group.member.all().exclude(id=user.id):
@@ -355,7 +381,7 @@ def prof_dash(request):
     if user.profile_pics.exists():
         prof_pic = user.profile_pics.last()
     else:
-        pic = None
+        prof_pic = None
     context = {
         'user':user,
         'prof_pic':prof_pic,
@@ -423,15 +449,28 @@ def post_content(request):
     key_pop = request.session.pop ('imageid')
     return redirect('/prof_dash')
 
+def destroy_post(request, post_id):
+    destroy = Post.objects.get(pk=post_id)
+    destroy.delete()
+    return redirect('/prof_dash')
+
 def roll_manage(request):
     return render(request, 'knifeRoll.html')
 
 def groups(request):
     user = User.objects.get(id=request.session ['userid'])
-    groups = Group.objects.filter(member=user)
+    owned_groups = Group.objects.filter(creator=user)
+    join_reqs=[]
+    for group in owned_groups:
+        if group.requests.all():
+            x=group.requests.all()
+            for req in x:
+                join_reqs.append(req)
+    groups = Group.objects.filter(member=user).exclude(name='All Recipes').exclude(active_group='off')
     context = {
         'user':user,
         'groups':groups,
+        'join_reqs':join_reqs
     }
     return render(request, 'groups.html', context)
 
@@ -455,6 +494,15 @@ def view_group(request, group_id):
 
     return render(request, 'viewGroup.html', {'group':group, 'user':user})
 
+
+
+
+def group_edit(request, group_id):
+    pass
+
+
+
+
 def join_request(request, group_id):
     user = User.objects.get(id=request.session ['userid'])
     group = Group.objects.get(id=group_id)
@@ -466,6 +514,21 @@ def join_request(request, group_id):
         msg_txt = request.POST ['msg_txt']
     )
     return redirect('/prof_dash')
+
+
+def accept_member(request, invite_id):
+    invite = Invite.objects.get(id=invite_id)
+    group = invite.for_group
+    new_member = invite.sender
+    group.member.add(new_member)
+    invite.delete()
+    group.save()
+    return redirect ('/groups')
+
+def reject_member(request, invite_id):
+    invite = Invite.objects.get(id=invite_id)
+    invite.delete()
+    return redirect ('/groups')
 
 def search_chefs(request):
     if request.method == 'POST':
@@ -480,7 +543,7 @@ def search_chefs(request):
 def other_prof(request, chef_id):
     user = User.objects.get(id=chef_id)
     posts = Post.objects.filter(poster=chef_id).order_by('-created_at')
-    groups = Group.objects.filter(creator=user)
+    groups = Group.objects.filter(creator=user).exclude(name='All Recipes').exclude(active_group='off')
     member_list = []
     for group in groups:
         for member in group.member.all().exclude(id=user.id):
@@ -499,10 +562,6 @@ def other_prof(request, chef_id):
     }
     
     return render(request, 'otherProf.html', context)
-
-
-
-
 
 def messages(request):
     return render(request, 'message.html')
@@ -526,16 +585,24 @@ def kr_photo_up(request):
     else:
         form = ImageForm()
     return render(request, 'knifeRoll.html', {'form': form, 'images':images, 'user':user})
-    
+
+def view_image(request, img_id):
+    image = Image.objects.get(id=img_id)
+    user = User.objects.get(id=request.session ['userid'])
+    return render(request, 'imageView.html', {'image':image, 'user':user})
+
+def destroy_image(request, img_id):
+    destroy = Image.objects.get(id=img_id)
+    destroy.delete()
+    return redirect('/kr_photo_up')
+
+
+
+
+
 def logout(request):
     request.session.clear()
     return redirect('/')
 
 
 
-def knife_roll(request):
-    user = User.objects.get(id=request.session['userid'])
-    context = {
-        'user':user,
-    }
-    return render(request, 'profDash.html', context)

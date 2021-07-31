@@ -63,7 +63,7 @@ class Recipe(models.Model):
     ingredients = models.TextField(max_length=455, null=True)
     creator = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE, null=True)
     favorite = models.ManyToManyField(User, related_name='fav_recipes')
-    group_rec = models.ManyToManyField(Group, related_name='group_recs')
+    group_rec = models.ForeignKey(Group, related_name='group_recs', on_delete=models.CASCADE, default=None)
     notes = models.TextField(max_length=455, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -88,8 +88,7 @@ class Image(models.Model):
     profile_pic = models.ForeignKey(User, related_name='profile_pics', on_delete=models.CASCADE, null=True)
     knife_roll_pic = models.ForeignKey(User, related_name='kn_ro_pics', on_delete=models.CASCADE, null=True)
     wall_pic = models.ForeignKey(User, related_name='wall_pics', on_delete=models.CASCADE, null=True)
-    def __str__(self):
-        return self.title
+
 
 class Post(models.Model):
     post_title = models.CharField(max_length=45)
@@ -98,8 +97,6 @@ class Post(models.Model):
     poster = models.ForeignKey(User, related_name='my_posts', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-
-
 
 class Suggestion(models.Model):
     rec_name = models.CharField(max_length=255)
@@ -115,7 +112,7 @@ class Suggestion(models.Model):
 
 class Invite(models.Model):
     sender = models.OneToOneField(User, on_delete=models.CASCADE)
-    for_group = models.OneToOneField(Group, on_delete=models.CASCADE)
+    for_group = models.ForeignKey(Group, related_name='requests', on_delete=models.CASCADE)
     msg_txt = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

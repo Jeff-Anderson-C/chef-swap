@@ -28,11 +28,18 @@
         </ul>
     </div>
     <div class="col-4 border border-dark rounded p-4 bg-light">
-        <ul><h3>Invites:</h3>
-            {% for invite in invites %}
-            <li>{{invite.name}}</li>
-            {% endfor %}
-        </ul>
+        <h3>Join Requests:</h3>
+            {% for invite in join_reqs %}
+        <div class="card mt-4 mb-4 me-2 shadow-lg rounded" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{invite.sender.first_name}} {{invite.sender.last_name}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{invite.for_group.name}}</h6>
+                <p class="card-text text-truncate" >{{invite.msg_txt}}</p>
+                <a href="/accept_member/{{invite.id}}" class="card-link">Accept</a>
+                <a href="/reject_member/{{invite.id}}" class="card-link">Reject</a>
+            </div>
+        </div>
+    {% endfor %}
     </div>
 </div>
 accept group invite

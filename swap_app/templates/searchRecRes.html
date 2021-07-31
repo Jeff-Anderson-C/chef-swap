@@ -5,7 +5,7 @@
                         <h1>You searched for: {{searched}}</h1>
                         <br>
                         <h3>My Recipes</h3>
-                        {% for recipe in recipes %}
+                        {% for recipe in my_recipes %}
                             {% if recipe.creator.id == user.id %}
                                 <a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a>
                             {% endif %}
@@ -13,7 +13,7 @@
                         <br><br><br>
                         <h3>All Other Recipes</h3>
                         {% for recipe in recipes %}
-                            {% if recipe.creator != user.id %}
+                            {% if recipe.creator.id != user.id %}
                                 <a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a>
                                 <br>
                             {% endif %}

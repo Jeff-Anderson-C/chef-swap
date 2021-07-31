@@ -28,6 +28,8 @@ urlpatterns = [
     path('photo_up', views.photo_up),
     path('change_pic/<int:rec_id>', views.change_pic),
 
+    path('group_recs', views.group_recs),
+
     path('test_kit', views.test_kit),
     path('new_test_rec', views.new_test_rec),
     path('view_test_rec/<int:rec_id>', views.view_test_rec),
@@ -48,9 +50,15 @@ urlpatterns = [
     path('groups', views.groups), 
     path('view_group/<int:group_id>', views.view_group),
     path('messages', views.messages), 
+    path('view_image/<int:img_id>', views.view_image),
+    path('destroy_image/<int:img_id>', views.destroy_image),
+    path('destroy_post/<int:post_id>', views.destroy_post),
+
 
     path('create_group', views.create_group),
     path('join_request/<int:group_id>', views.join_request),
     path('search_chefs', views.search_chefs),
     path('other_prof/<int:chef_id>', views.other_prof),
+    path('accept_member/<int:invite_id>', views.accept_member),
+    path('reject_member/<int:invite_id>', views.reject_member),
 ]
