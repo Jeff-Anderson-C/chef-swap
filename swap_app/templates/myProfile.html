@@ -1,7 +1,5 @@
 {% extends 'base_profile.html' %}
 {% block content %}
-
-
 <div class="container">
     <div class="container mt-3 mb-3 p-3 col-5 bg-light rounded">
         <h3 class="fw-bold"> My Profile Change</h3>
@@ -14,8 +12,8 @@
                 <input type="text" name="first_name" class="form-control shadow mb-2" value="{{user.first_name}}">
                 <label for="restaurant" class="form-label fw-bold"><h5>Last name</h5></label>
                 <input type="text" name="last_name" class="form-control shadow mb-2" value="{{user.last_name}}">
-                <label for="prev_places" class="form-label fw-bold"><h5>Email address</h5></label>
-                <input type="text" name="email" class="form-control shadow mb-2" value="{{user.email}}">
+                <!-- <label for="email" class="form-label fw-bold"><h5>Email address</h5></label>
+                <input type="text" name="email" class="form-control shadow mb-2" value="{{user.email}}"> -->
                 <button class="mt-4 btn btn-dark border border-light border-2" type="submit">Submit</button>
             </div>
         </form>

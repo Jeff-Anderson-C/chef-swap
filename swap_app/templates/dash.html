@@ -12,6 +12,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="shortcut icon" href="{%  static 'img/favicon.ico' %}">
     </head>
     <body>
         <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-4">
@@ -85,9 +86,9 @@
                 <a href="/logout" class="btn btn-lg btn-dark">Logout</a> 
             </div>
             <br>
-            <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4">
+            <footer class="footer mt-auto py-3 bg-dark mt-4">
                 <div class="container">
-                    <span class="text-muted">Powered by Sotan Collaborative</span>
+                    <span class="text-light d-flex justify-content-between"><a>Powered by Sotan Collaborative</a>  | <a class="text-decoration-none text-secondary" href="/contact">Contact Us</a>  |  <a class="text-light text-decoration-none">Chef Sourced © 2021</a>  |  <a class="text-decoration-none text-secondary" href="/terms_conditions">terms & conditions</a>  |  <a class="text-light text-decoration-none">@sotancollaborative</a></span>
                 </div>
             </footer>
         </div>

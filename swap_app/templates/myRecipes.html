@@ -1,67 +1,82 @@
 {% extends 'base_rec.html' %}
 {% block content %}
-            
-                <div class="d-flex justify-content-around mt-4">
-                    {% for cat in cats %}
-                        <div class="btn-group dropend">
-                            <button class="btn btn-secondary" type="button">
-                            {{cat.name}}
-                            </button>
-                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                {% for l in user_recipes.all %} 
-                                    {% if cat.name == l.category.name %}
-                                        <li><a class="dropdown-item" href="/recipe/{{l.id}}">{{l.rec_name}}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="d-flex justify-content-around mt-3 mb-3" >
-                    <div class="col-6 border border-light border-2 p-2" >
-                        <table class="table table-dark table-striped p-3 bg-body rounded">
-                            <thead>
-                                <tr>
-                                    <th>Recipe Name</th>
-                                    <th>Category</th>
-                                    <th>Created</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for recipe in user_recipes %}
-                                <tr>
-                                    <td><a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a></td>
-                                    <td>{{recipe.category.name}}</td>
-                                    <td>{{recipe.created_at|date:"M d Y"}}</td>
-                                    <td> <a href="/edit/{{recipe.id}}" class="text-decoration-none text-success">edit</a> | <a href="/destroy/{{recipe.id}}" class="text-decoration-none text-success">remove</a></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-5 p-2 border border-light border-2" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            {% for pic in food_rand_imgs %}
-                                {% if forloop.first %}
-                                    <div class="carousel-item active" data-bs-interval="10000">
-                                        <img src="{{pic.image.url}}" class="d-block w-100 rounded" alt="...">
-                                        <div class="carousel-caption d-none d-md-block">
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <div class="carousel-item" data-bs-interval="10000">
-                                        <img src="{{pic.image.url}}" class="d-block w-100 rounded" alt="...">
-                                        <div class="carousel-caption d-none d-md-block">
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+<div class="d-flex justify-content-around mt-4">
+    {% for cat in cats %}
+        <div class="btn-group dropend">
+            <button class="btn btn-dark text-light" type="button">
+            {{cat.name}}
+            </button>
+            <button type="button" class="btn btn-sm btn-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                {% for l in user_recipes.all %} 
+                    {% if cat.name == l.category.name %}
+                        <li><a class="dropdown-item" href="/recipe/{{l.id}}">{{l.rec_name}}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+<div class="d-flex justify-content-around mt-3 mb-3" >
+    <div class="col-6 border border-light border-2 p-2" >
+        <table class="table table-dark table-striped p-3 bg-body rounded">
+            <thead>
+                <tr>
+                    <th>Recipe Name</th>
+                    <th>Category</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipe in user_recipes %}
+                <tr>
+                    <td><a href="/recipe/{{recipe.id}}" class="text-decoration-none text-success">{{recipe.rec_name}}</a></td>
+                    <td>{{recipe.category.name}}</td>
+                    <td>{{recipe.created_at|date:"M d Y"}}</td>
+                    <td> <a href="/edit/{{recipe.id}}" class="text-decoration-none text-success"><button class="btn btn-sm btn-outline-success">edit</button></a> |  <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#myModal{{recipe.id}}">remove</button></td>
+                    <div class="modal" id="myModal{{recipe.id}}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete {{recipe.rec_name}}?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a href="/destroy/{{recipe.id}}"><button type="button" class="btn btn-danger">Delete recipe</button></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>  
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="carouselExampleDark" class="carousel carousel-dark slide col-5 p-2 border border-light border-2" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for pic in food_rand_imgs %}
+                {% if forloop.first %}
+                    <div class="carousel-item active" data-bs-interval="10000">
+                        <img src="{{pic.image.url}}" class="d-block w-100 rounded" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="carousel-item" data-bs-interval="10000">
+                        <img src="{{pic.image.url}}" class="d-block w-100 rounded" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

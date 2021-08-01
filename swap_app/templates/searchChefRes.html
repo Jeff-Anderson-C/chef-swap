@@ -1,6 +1,5 @@
 {% extends 'base_profile.html' %}
 {% block content %}
-
 <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-4" >
     {% if searched %}
         <h1>You searched for: {{searched}}</h1>
@@ -13,7 +12,4 @@
         <h1>No results for {{searched}}. Try your search again.</h1>
     {% endif %}
 </div>
-
-
-
 {% endblock %}

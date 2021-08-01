@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chef Swap</title>
+        <title>Chef Sourced</title>
         <meta name="description" content="Join groups of other chefs to collaborate on your 
         recipes, find inspiration, as well as show off your skills, and your knife roll">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,18 +22,19 @@
                 background-attachment: fixed;  
                 background-size: cover;
             }
-            </style>
+        </style>
+        <link rel="shortcut icon" href="{%  static 'img/favicon.ico' %}">
     </head>
     <body>
         <div class="mt-2">
             
                 <div class="swap_head d-flex align-top p-4">
                     <span class="align-bottom text-light"><h1 class="fw-bold">Chef Sourced</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
-                    <img src="{% static 'img/logo-icon.png' %}" class="ms-auto mb-2" style="width: 7rem" alt="">
+                    <a class="ms-auto mb-2" href="/dash"><img src="{% static 'img/logo-icon.png' %}"  style="width: 7rem" alt=""></a>
                 </div>
                     <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded border border-light border-2">
                         <div class="container-fluid">
-                            <a class="col-1 navbar-brand text-danger" href="#">Chef {{user.first_name}}</a>
+                            <a href="/prof_dash" class="col-1 navbar-brand text-danger text-decoration-none" >Chef {{user.first_name}}</a>
                             <div class="collapse navbar-collapse" id="navbarText">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
@@ -42,7 +43,7 @@
                                         <a class="nav-link active" aria-current="page" href="/my_suggs">Suggestions</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/favRecipes">Favorite Recipes</a>
+                                        <a class="nav-link active" aria-current="page" href="/fav_recipes">Favorite Recipes</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="/all_rec">All Recipes</a>

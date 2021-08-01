@@ -3,10 +3,10 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
+    path('log_reg', views.log_reg),
     path('register', views.register),
     path('login', views.login),
     
-
     path('dash', views.dash),
     path('logout', views.logout),
     path('new_rec', views.new_rec),
@@ -22,12 +22,11 @@ urlpatterns = [
     path('my_suggs', views.my_suggs),
     path('sugg_for_me/<int:rec_id>', views.sugg_for_me),
     path('destroy_sugg/<int:sugg_id>', views.delete_sugg),
-    path('favRecipes', views.fav_recipes),
+    path('fav_recipes', views.fav_recipes),
     path('make_fav/<int:rec_id>', views.make_fav),
     path('search_recipes', views.search_recipes),
     path('photo_up', views.photo_up),
     path('change_pic/<int:rec_id>', views.change_pic),
-
     path('group_recs', views.group_recs),
 
     path('test_kit', views.test_kit),
@@ -41,7 +40,6 @@ urlpatterns = [
     path('prof_dash', views.prof_dash),
     path('pr_photo_up', views.pr_photo_up),
     path('kr_photo_up', views.kr_photo_up),
-    # path('post_photo_up', views.post_photo_up),
     path('add_post', views.add_post),
     path('post_content', views.post_content),
     path('my_profile', views.my_profile),
@@ -49,7 +47,6 @@ urlpatterns = [
     path('roll_manage', views.roll_manage), 
     path('groups', views.groups), 
     path('view_group/<int:group_id>', views.view_group),
-    path('messages', views.messages), 
     path('view_image/<int:img_id>', views.view_image),
     path('destroy_image/<int:img_id>', views.destroy_image),
     path('destroy_post/<int:post_id>', views.destroy_post),
@@ -61,4 +58,8 @@ urlpatterns = [
     path('other_prof/<int:chef_id>', views.other_prof),
     path('accept_member/<int:invite_id>', views.accept_member),
     path('reject_member/<int:invite_id>', views.reject_member),
+
+    path('contact', views.contact), 
+    path('terms_conditions', views.terms_conditions),
+    path('privacy_policy', views.privacy_policy),
 ]

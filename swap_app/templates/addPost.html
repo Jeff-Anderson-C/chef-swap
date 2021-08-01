@@ -10,18 +10,17 @@
     {% if img_obj %}
         <h3>Succesfully uploaded : {{img_obj.title}}</h3>
         <img src="{{img_obj.image.url}}" alt="connect" style="max-height:300px">
+        <div class="ms-3 mt-5">
+            <form action="/post_content" method="POST">
+                {% csrf_token %}
+                <label for="title" class="text-light mb-3">Title:</label>
+                <input type="text" name="title">
+                <p><label for="content" class="text-light mt-2">Message:</label>
+                <input type="text" name="content"></p>
+                <button class="btn btn-dark mb-4">Post</button>
+            </form>
+        </div>
     {% endif %}
-</div>
-<div class="ms-3 mt-5">
-    <form action="/post_content" method="POST">
-        {% csrf_token %}
-    <label for="title" class="text-light mb-3">Title:</label>
-    <input type="text" name="title">
-    <p><label for="content" class="text-light mt-2">Message:</label>
-    <input type="text" name="content"></p>
-    
-    <button class="btn btn-dark mb-4">Post</button>
-    </form>
 </div>
 
 

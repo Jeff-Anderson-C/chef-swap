@@ -1,0 +1,80 @@
+{% extends 'base_dash.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container d-flex justify-content-center">
+    <a href="/log_reg" class="text-decoration-none text-dark fs-4 fw-bold p-2 border border-1 border-dark rounded">Login or Register</a>
+</div>
+<div class="container">
+    <div class="container bg-body d-flex justify-content-evenly m-5">
+        <div style="height: 200px; width: 365px;">
+            <img src="{% static 'img/recipes.png' %}" class="figure-img img-fluid rounded p-1" alt="">
+            <figcaption class="figure-caption">recipe dashboard</figcaption>
+        </div> 
+        <div class="shadow p-2" style="height: 200px; width: 500px;">
+            <p>    Store all of your recipes that you want to have access to anywhere; share private recipes among chefs in your groups.
+                Recipes are sorted by category and separated by group. You can leave notes on your recipes to tell your group members how
+                you need help improving your recipe, or just tell your story. Your group members can suggest changes and save your recipe 
+                to their favorites.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container bg-body d-flex justify-content-evenly m-5">
+        <div style="height: 200px; width: 365px;">
+            <img src="{% static 'img/recipe_view.png' %}" class="figure-img img-fluid rounded p-1" alt="">
+            <figcaption class="figure-caption">recipe view</figcaption>
+        </div> 
+        <div class="shadow p-2" style="height: 200px; width: 500px;">
+            <p>    View your recipe and make edits when needed. Update the photo and change the notes as you imporve your dish. 
+                Recipes that are not group specific are available for all of the Chef Sourced community to view, share your food
+                and spread the love. 
+            </p>
+        </div>
+    </div>
+
+    <div class="container bg-body d-flex justify-content-evenly m-5">
+        <div style="height: 200px; width: 365px;">
+            <img src="{% static 'img/test_kit.png' %}" class="figure-img img-fluid rounded p-1" alt="">
+            <figcaption class="figure-caption">test kitchen dashboard</figcaption>
+        </div> 
+        <div class="shadow p-2" style="height: 200px; width: 500px;">
+            <p>Still working on that dish? Not ready to share with your group or the community? Keep track of it here in the test kitchen. 
+                Your test kitchen keeps your work-in-progress recipes seperate from your completed recipes. You can access the edit
+                screen right from the dash so you can get in and make tweeks, then get back to work. When it's ready, ship it off to your 
+                recipes and share with your group. 
+            </p>
+        </div>
+    </div>
+
+    <div class="container bg-body d-flex justify-content-evenly m-5">
+        <div style="height: 200px; width: 365px;">
+            <img src="{% static 'img/knife_roll.png' %}" class="figure-img img-fluid rounded p-1" alt="">
+            <figcaption class="figure-caption">knife roll gallery</figcaption>
+        </div> 
+        <div class="shadow p-2" style="height: 200px; width: 500px;">
+            <p>Show your knives! Upload pics of your tools and tell us about 'em. We want to see what you're working with to get those
+                crispy knife cuts. Spats, tweezers, pans, and circulators are welcome too; but we all know we're here for the knives. 
+            </p>
+        </div>
+    </div>
+
+    <div class="container bg-body d-flex justify-content-evenly m-5">
+        <div style="height: 200px; width: 365px;">
+            <img src="{% static 'img/profile.png' %}" class="figure-img img-fluid rounded p-1" alt="">
+            <figcaption class="figure-caption">profile wall</figcaption>
+        </div> 
+        <div class="shadow p-2" style="height: 200px; width: 500px;">
+            <p>Forget the news articles and selfies. We're here for food. Post pics of your dinner, chit piles, harvest, or shift drinks. 
+                keep it kitchen related and keep up with your group members. 
+            </p>
+        </div>
+    </div>
+</div>  
+
+
+
+
+
+{% endblock %}

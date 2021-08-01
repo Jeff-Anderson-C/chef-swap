@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chef Swap</title>
+        <title>Chef Sourced</title>
         <meta name="description" content="Join groups of other chefs to collaborate on your 
         recipes, find inspiration, as well as show off your skills, and your knife roll">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,19 +21,26 @@
                 background-attachment: fixed;  
                 background-size: cover;
             }
-            </style>
+        </style>
+        <link rel="shortcut icon" href="{%  static 'img/favicon.ico' %}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <style>
+            #cont {
+                display: none;
+            }
+        </style>
     </head>
     <body>
         <div class="mt-2">
             
                 <div class="swap_head d-flex align-top p-4">
                     <span class="text-light"><h1 class="fw-bold">Chef Sourced</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
-                    <img src="{% static 'img/logo-icon.png' %}" class="ms-auto mb-2 " style="width: 7rem" alt="">
+                    <a class="ms-auto mb-2" href="/dash"><img src="{% static 'img/logo-icon.png' %}"  style="width: 7rem" alt=""></a>
                 </div>
                 <div class="">
                     <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-b4 rounded border border-light border-2">
                         <div class="container-fluid">
-                            <a class="col-1 navbar-brand text-secondary" href="/prof_dash">Chef {{user.first_name}}</a>
+                            <a href="/prof_dash" class="col-1 navbar-brand text-secondary text-decoration-none" >Chef {{user.first_name}}</a>
                             <div class="collapse navbar-collapse" id="navbarText">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">

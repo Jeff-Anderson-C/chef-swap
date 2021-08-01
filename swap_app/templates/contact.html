@@ -1,0 +1,19 @@
+{% extends 'base_dash.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center m-5">
+    <div class="col-5 p-3 shadow">
+        <h1>Contact</h1>
+        <h4>Contact us directly if you have any questions</h4>
+        <p>
+            Please write your name, email address and a message below if you have any questions.
+            One of our staff members will be happy to contact you directly and answer your questions as soon as possible. 
+        </p>
+        {% load crispy_forms_tags %}
+        <form method="POST" class="uniform">
+        {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

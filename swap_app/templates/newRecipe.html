@@ -1,6 +1,5 @@
 {% extends 'base_rec.html' %}
 {% block content %}
-
 <div class="container">
     <form action="/create_new" method="POST" class="mt-4 mb-2 d-flex justify-content-between">
         {% csrf_token %}
@@ -9,9 +8,9 @@
             <input type="text" name="rec_name" class="form-control" value="{{recipe.rec_name}}">
             <label class="form-label fw-bold text-light mt-3" for="category"><h3>Category</h3></label>
             <select class="form-select" name="category">
-            {% for cat in cats %}
-                <option value="{{cat.name}}">{{cat.name}}</option>
-            {% endfor %}
+                {% for cat in cats %}
+                    <option value="{{cat.name}}">{{cat.name}}</option>
+                {% endfor %}
             </select>
             <label class="form-label fw-bold text-light mt-3" for="group_rec"><h3>Group</h3></label>
             <select class="form-select" name="group_rec">

@@ -2,13 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib import messages 
 from .models import User, Recipe, Suggestion, Image, Category, TestRec, Post, Group, Invite
 import bcrypt
-from .forms import ImageForm
+from .forms import ImageForm, ContactForm
 import random 
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
 
-# Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'intro.html')
+
+def log_reg(request):
+    return render(request, 'log_reg.html')
 
 def register(request):
     if request.method == "GET":
@@ -59,15 +63,6 @@ def dash(request):
     }
     return render(request, 'dash.html', context)
 
-
-
-
-
-
-
-
-
-
 # Recipes
 
 def new_rec(request):
@@ -95,28 +90,28 @@ def create_new(request):
         category = rec_cat, 
         group_rec = rec_group,
     )
-    new_recipe.save()
     request.session['rec_id'] = new_recipe.id
     return redirect('/photo_up')
 
 def change_pic(request, rec_id):
+    user = User.objects.get(id= request.session ['userid'])
     recipe = Recipe.objects.get(id=rec_id)
+    x=recipe.images.all()
+    x.delete()
     request.session['rec_id'] = recipe.id
     return redirect('/photo_up')
 
 def photo_up(request):
-# """Process images uploaded by users"""
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            # Get the current instance object to display in the template
+            
             img_obj = form.instance
             recipe = Recipe.objects.get(id=request.session['rec_id']) 
             this_pic = Image.objects.get(pk=img_obj.pk)
             this_pic.for_recipe = recipe
             user = User.objects.get(id=request.session['userid'])
-            recipe.save()
             user.save()
             this_pic.save()
             m = request.session.pop('rec_id')
@@ -124,7 +119,6 @@ def photo_up(request):
     else:
         form = ImageForm()
     return render(request, 'recPic.html', {'form': form})
-
 
 def my_recipes(request):
     user = User.objects.get(id=request.session['userid'])
@@ -192,10 +186,15 @@ def save_edit(request, rec_id):
     this_recipe.prep_time = request.POST['prep_time']
     this_recipe.procedure = request.POST['procedure']
     this_recipe.ingredients = request.POST['ingredients']
+    this_recipe.notes = request.POST['notes']
     rec_group.group_recs.add(this_recipe)
     rec_group.save()
     this_recipe.save() 
     return redirect('/my_recipes')
+
+
+# Suggestions
+
 
 def suggest(request, rec_id):
     recipe = Recipe.objects.get(id=rec_id)
@@ -248,11 +247,19 @@ def sugg_for_me(request, rec_id):
     }
     return render(request, 'suggForMyRec.html', context)
 
+def delete_sugg(request, sugg_id):
+    sugg = Suggestion.objects.get(id=sugg_id)
+    sugg.delete()
+    return redirect('/my_suggs')
+
+
+# Favorite Recipes
+
+
 def fav_recipes(request):
     user = User.objects.get(id=request.session['userid'])
     recipes = Recipe.objects.all()
     cats = Category.objects.all()
-    print(recipes)
     context = {
         'recipes': recipes,
         'user': user,
@@ -270,7 +277,6 @@ def make_fav(request, rec_id):
 def group_recs(request):
     user = User.objects.get(id=request.session ['userid'])
     groups = Group.objects.filter(member=user).exclude(name="All Recipes")
-
     return render(request, 'groupRecs.html', {'groups':groups, 'user':user})
 
 def search_recipes(request):
@@ -279,9 +285,15 @@ def search_recipes(request):
         user = User.objects.get(id=request.session['userid'])
         recipes = Recipe.objects.filter(rec_name__contains=searched).filter(group_rec=2)
         my_recipes = Recipe.objects.filter(rec_name__contains=searched).filter(creator=user)
-        return render(request, 'searchRecRes.html', {'searched':searched, 'recipes':recipes, 'user':user, 'my_recipes':my_recipes})
+        context = {
+            'searched':searched,
+            'recipes':recipes,
+            'user':user,
+            'my_recipes':my_recipes
+        }
+        return render(request, 'searchRecRes.html', context)
     else:
-        return render(request, 'searchRecRes.html', {})
+        return render(request, 'searchRecRes.html')
 
 def remove_rec(request, rec_id):
     this_recipe = Recipe.objects.get(id=rec_id)
@@ -289,11 +301,8 @@ def remove_rec(request, rec_id):
     return redirect('/my_recipes')
 
 
-
-
-
-
 # Test Kitchen
+
 
 def test_kit(request):
     user = User.objects.get(id=request.session['userid'])
@@ -346,9 +355,9 @@ def save_test_rec_edit(request, rec_id):
     this_recipe.save()
     return redirect('/test_kit')
 
-
 def save_to_main(request, test_id):
     test_rec = TestRec.objects.get(id=test_id)
+    all_rec = Group.objects.get(name='All Recipes')
     new_rec = Recipe.objects.create(
         rec_name = test_rec.rec_name,
         category = test_rec.category,
@@ -357,17 +366,14 @@ def save_to_main(request, test_id):
         ingredients = test_rec.ingredients, 
         creator = test_rec.creator,
         notes = test_rec.notes,
+        group_rec = all_rec
     )
     test_rec.delete()
     return redirect('/my_recipes')
 
-def delete_sugg(request, sugg_id):
-    sugg = Suggestion.objects.get(id=sugg_id)
-    sugg.delete()
-    return redirect('/my_suggs')
 
+# Knife roll/Profile
 
-# Knife roll/profile
 
 def prof_dash(request):
     user = User.objects.get(id=request.session['userid'])
@@ -402,7 +408,7 @@ def profile_edit_save(request):
     user = User.objects.get(id = request.session ['userid'])
     user.first_name = request.POST ['first_name']
     user.last_name = request.POST ['last_name']
-    user.email = request.POST ['email']
+    # user.email = request.POST ['email']
     user.save()
     return redirect('/my_profile')
 
@@ -411,7 +417,7 @@ def pr_photo_up(request):
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            # Get the current instance object to display in the template
+            
             img_obj = form.instance
             user = User.objects.get(id = request.session ['userid'])
             this_pic = Image.objects.get(title=img_obj.title)
@@ -423,6 +429,68 @@ def pr_photo_up(request):
         form = ImageForm()
     return render(request, 'profPic.html', {'form': form})
 
+def other_prof(request, chef_id):
+    user = User.objects.get(id=chef_id)
+    posts = Post.objects.filter(poster=chef_id).order_by('-created_at')
+    groups = Group.objects.filter(creator=user).exclude(name='All Recipes').exclude(active_group='off')
+    member_list = []
+    for group in groups:
+        for member in group.member.all().exclude(id=user.id):
+            if member not in member_list:
+                member_list.append(member)            
+    if user.profile_pics.exists():
+        prof_pic = user.profile_pics.last()
+    else:
+        prof_pic = None
+    context = {
+        'user':user,
+        'prof_pic':prof_pic,
+        'posts':posts,
+        'member_list':member_list,
+        'groups':groups,
+    }
+    
+    return render(request, 'otherProf.html', context)
+
+# def messages(request):
+#     return render(request, 'message.html')
+
+def roll_manage(request):
+    return render(request, 'knifeRoll.html')
+
+def kr_photo_up(request):
+    user = User.objects.get(id=request.session ['userid'])
+    # if user.kn_ro_pics:
+    images = Image.objects.filter(knife_roll_pic = user)
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Get the current instance object to display in the template
+            img_obj = form.instance
+            this_pic = img_obj
+            print(this_pic)
+            user = User.objects.get(id = request.session ['userid'])
+            this_pic.knife_roll_pic = user
+            this_pic.save()
+            return render(request, 'knifeRoll.html', {'form':form, 'img_obj':img_obj, 'images':images, 'user':user})
+    else:
+        form = ImageForm()
+    return render(request, 'knifeRoll.html', {'form': form, 'images':images, 'user':user})
+
+def view_image(request, img_id):
+    image = Image.objects.get(id=img_id)
+    user = User.objects.get(id=request.session ['userid'])
+    return render(request, 'imageView.html', {'image':image, 'user':user})
+
+def destroy_image(request, img_id):
+    destroy = Image.objects.get(id=img_id)
+    destroy.delete()
+    return redirect('/kr_photo_up')
+
+
+
+
 def add_post(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
@@ -431,8 +499,12 @@ def add_post(request):
             # Get the current instance object to display in the template
             img_obj = form.instance
             user = User.objects.get(id = request.session ['userid'])
-            request.session['imageid'] = img_obj.id
-            return render(request, 'addPost.html', {'form':form, 'img_obj':img_obj})
+            if img_obj.id:
+                request.session['imageid'] = img_obj.id
+                return render(request, 'addPost.html', {'form':form, 'img_obj':img_obj})
+            else:
+                return render(request, 'addPost.html', {'form': form})
+
     else:
         form = ImageForm()
     return render(request, 'addPost.html', {'form': form})
@@ -450,12 +522,22 @@ def post_content(request):
     return redirect('/prof_dash')
 
 def destroy_post(request, post_id):
-    destroy = Post.objects.get(pk=post_id)
-    destroy.delete()
-    return redirect('/prof_dash')
+    post = Post.objects.get(pk=post_id)
+    user = User.objects.get(id=request.session ['userid'])
+    if post.poster == user:
+        destroy = Post.objects.get(pk=post_id)
+        destroy.delete()
+        return redirect('/prof_dash')
+    else:
+        return redirect('/dash')
 
-def roll_manage(request):
-    return render(request, 'knifeRoll.html')
+
+
+
+
+
+
+# Groups
 
 def groups(request):
     user = User.objects.get(id=request.session ['userid'])
@@ -491,17 +573,10 @@ def create_group(request):
 def view_group(request, group_id):
     user = User.objects.get(id=request.session ['userid'])
     group = Group.objects.get(id=group_id)
-
     return render(request, 'viewGroup.html', {'group':group, 'user':user})
-
-
-
 
 def group_edit(request, group_id):
     pass
-
-
-
 
 def join_request(request, group_id):
     user = User.objects.get(id=request.session ['userid'])
@@ -514,7 +589,6 @@ def join_request(request, group_id):
         msg_txt = request.POST ['msg_txt']
     )
     return redirect('/prof_dash')
-
 
 def accept_member(request, invite_id):
     invite = Invite.objects.get(id=invite_id)
@@ -540,65 +614,34 @@ def search_chefs(request):
         return render(request, 'searchChefRes.html', {})
 
 
-def other_prof(request, chef_id):
-    user = User.objects.get(id=chef_id)
-    posts = Post.objects.filter(poster=chef_id).order_by('-created_at')
-    groups = Group.objects.filter(creator=user).exclude(name='All Recipes').exclude(active_group='off')
-    member_list = []
-    for group in groups:
-        for member in group.member.all().exclude(id=user.id):
-            if member not in member_list:
-                member_list.append(member)            
-    if user.profile_pics.exists():
-        prof_pic = user.profile_pics.last()
-    else:
-        prof_pic = None
-    context = {
-        'user':user,
-        'prof_pic':prof_pic,
-        'posts':posts,
-        'member_list':member_list,
-        'groups':groups,
-    }
-    
-    return render(request, 'otherProf.html', context)
 
-def messages(request):
-    return render(request, 'message.html')
+def contact(request):
+	if request.method == 'POST':
+		form = ContactForm(request.POST)
+		if form.is_valid():
+			subject = "Website Inquiry" 
+			body = {
+			'first_name': form.cleaned_data['first_name'], 
+			'last_name': form.cleaned_data['last_name'], 
+			'email': form.cleaned_data['email_address'], 
+			'message':form.cleaned_data['message'], 
+			}
+			message = "\n".join(body.values())
 
-def kr_photo_up(request):
-    user = User.objects.get(id=request.session ['userid'])
-    # if user.kn_ro_pics:
-    images = Image.objects.filter(knife_roll_pic = user)
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            # Get the current instance object to display in the template
-            img_obj = form.instance
-            this_pic = img_obj
-            print(this_pic)
-            user = User.objects.get(id = request.session ['userid'])
-            this_pic.knife_roll_pic = user
-            this_pic.save()
-            return render(request, 'knifeRoll.html', {'form':form, 'img_obj':img_obj, 'images':images, 'user':user})
-    else:
-        form = ImageForm()
-    return render(request, 'knifeRoll.html', {'form': form, 'images':images, 'user':user})
+			try:
+				send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
+			except BadHeaderError:
+				return HttpResponse('Invalid header found.')
+			return redirect ("/dash")
 
-def view_image(request, img_id):
-    image = Image.objects.get(id=img_id)
-    user = User.objects.get(id=request.session ['userid'])
-    return render(request, 'imageView.html', {'image':image, 'user':user})
+	form = ContactForm()
+	return render(request, "contact.html", {'form':form})
 
-def destroy_image(request, img_id):
-    destroy = Image.objects.get(id=img_id)
-    destroy.delete()
-    return redirect('/kr_photo_up')
+def terms_conditions(request):
+    return render(request, 'termsAndConditions.html')
 
-
-
-
+def privacy_policy(request):
+    return render(request, 'privacyPolicy.html')
 
 def logout(request):
     request.session.clear()
