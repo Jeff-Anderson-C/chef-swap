@@ -17,6 +17,25 @@
                 <button class="mt-4 btn btn-dark border border-light border-2" type="submit">Submit</button>
             </div>
         </form>
+        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal{{user.id}}">Delete Account</button>
+        <div class="modal" id="myModal{{user.id}}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Account?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete your account? This action is irreversible. All groups and recipes you have created will also be deleted.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a href="/destroy_acct/{{user.id}}"><button type="button" class="btn btn-danger">Delete account</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <a href="/destroy_acct/{{user.id}}"><button class="btn btn-sm btn-dark">delete account</button></a><a class="text-decoration-none text-dark">This action is irreversible.</a> -->
     </div>  
 </div>
 {% endblock %}

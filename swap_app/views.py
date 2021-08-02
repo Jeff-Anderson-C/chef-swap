@@ -531,10 +531,13 @@ def destroy_post(request, post_id):
     else:
         return redirect('/dash')
 
-
-
-
-
+def destroy_acct(request, user_id):
+    user = User.objects.get (id=request.session ['userid'])
+    if user.id == user_id:
+        user.delete()
+        return redirect('/')
+    else:
+        return redirect('/')
 
 
 # Groups

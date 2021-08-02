@@ -58,6 +58,7 @@ urlpatterns = [
     path('other_prof/<int:chef_id>', views.other_prof),
     path('accept_member/<int:invite_id>', views.accept_member),
     path('reject_member/<int:invite_id>', views.reject_member),
+    path('destroy_acct/<int:user_id>', views.destroy_acct),
 
     path('contact', views.contact), 
     path('terms_conditions', views.terms_conditions),
