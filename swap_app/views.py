@@ -102,6 +102,7 @@ def change_pic(request, rec_id):
     return redirect('/photo_up')
 
 def photo_up(request):
+    user = User.objects.get(id=request.session ['userid'])
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -118,7 +119,7 @@ def photo_up(request):
             return redirect('/my_recipes')
     else:
         form = ImageForm()
-    return render(request, 'recPic.html', {'form': form})
+    return render(request, 'recPic.html', {'form': form, 'user': user})
 
 def my_recipes(request):
     user = User.objects.get(id=request.session['userid'])
@@ -272,7 +273,7 @@ def make_fav(request, rec_id):
     user = User.objects.get(id=request.session['userid'])
     recipe = Recipe.objects.get(id=rec_id)
     user.fav_recipes.add(recipe)
-    return redirect('/favRecipes')
+    return redirect('/fav_recipes')
 
 def group_recs(request):
     user = User.objects.get(id=request.session ['userid'])
@@ -492,6 +493,7 @@ def destroy_image(request, img_id):
 
 
 def add_post(request):
+    user = User.objects.get(id=request.session ['userid'])
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -501,13 +503,13 @@ def add_post(request):
             user = User.objects.get(id = request.session ['userid'])
             if img_obj.id:
                 request.session['imageid'] = img_obj.id
-                return render(request, 'addPost.html', {'form':form, 'img_obj':img_obj})
+                return render(request, 'addPost.html', {'form':form, 'img_obj':img_obj, 'user':user})
             else:
-                return render(request, 'addPost.html', {'form': form})
+                return render(request, 'addPost.html', {'form': form, 'user':user})
 
     else:
         form = ImageForm()
-    return render(request, 'addPost.html', {'form': form})
+    return render(request, 'addPost.html', {'form': form, 'user':user})
 
 def post_content(request):
     user = User.objects.get(id=request.session ['userid'])

@@ -14,8 +14,8 @@
     </head>
     <body>
         <br><br><br><br>
-        <div class="container d-flex justify-content-center mb-5">
-            <div class="m-4 col-5 p-5 d-flex justify-content-center shadow">
+        <div class="container d-flex justify-content-center">
+            <div class="m-4 col-4 p-5 d-flex shadow">
                 <form action="/login" method="POST"><h1>Login</h1>
                     {% csrf_token %}
                     <label for="email" class="form-label">Email</label>
@@ -26,8 +26,8 @@
                 </form>
             </div>
         </div>
-        <div class="container d-flex justify-content-center mt-5">
-            <div class="m-4 col-5 d-flex justify-content-center shadow">
+        <div class="container d-flex justify-content-center">
+            <div class="m-4 col-4 p-5 d-flex shadow">
                 <ul>
                     {% if messages %}
                         {% for message in messages %}
@@ -44,7 +44,7 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" name="email" id="" class="form-control shadow">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" id="" class="form-control">
+                    <input type="password" name="password" id="" class="form-control shadow">
                     <label for="pass_confirm" class="form-label">Confirm Password</label>
                     <input type="password" name="pass_confirm" id="" class="form-control shadow">
 
@@ -54,10 +54,6 @@
                             I agree to <a href="/terms_conditions">terms and conditions</a> | <a href="/privacy_policy">privacy policy</a>
                         </label>
                     </div>
-
-
-
-                    
                     <button name="regs" id="regs" disabled id="regs" class="btn btn-primary mt-4">Register</button>
                 </form>
             </div>

@@ -1,6 +1,7 @@
 from django.db import models
 import re
 from datetime import date
+from profanity.validators import validate_is_profane
 
 # Create your models here.
 
@@ -30,6 +31,10 @@ class UserManager(models.Manager):
         return errors
 
 
+
+#  validators=[validate_is_profane
+
+
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -56,7 +61,7 @@ class Group(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
 class Recipe(models.Model):
-    rec_name = models.CharField(max_length=255)
+    rec_name = models.CharField(max_length=255, validators=[validate_is_profane])
     category = models.ForeignKey(Category, related_name='cat_recipes', max_length=45, on_delete=models.CASCADE)
     prep_time = models.CharField(max_length=20)
     procedure = models.CharField(max_length=455, null=True)

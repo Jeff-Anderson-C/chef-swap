@@ -14,14 +14,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <style>
+        <!-- <style>
             body {
                 background-image: url("{% static 'img/knife-roll-placeholder.jpg' %}");
                 background-repeat: no-repeat;
                 background-attachment: fixed;  
                 background-size: cover;
             }
-        </style>
+        </style> -->
         <link rel="shortcut icon" href="{%  static 'img/favicon.ico' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <style>
@@ -31,9 +31,17 @@
         </style>
     </head>
     <body>
+        <div class="container shadow-lg p-3 mb-5 bg-body rounded mt-4">
         <div class="mt-2">
-            
-                <div class="swap_head d-flex align-top p-4">
+            <style>
+                .topBan {
+                    background-image: url("{% static 'img/knife-roll-placeholder.jpg' %}");
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;  
+                    background-size: cover;
+                }
+            </style>
+                <div class="swap_head d-flex align-top p-4 m-1 topBan">
                     <span class="text-light"><h1 class="fw-bold">Chef Sourced</h1>  <h3>Collaborate on recipes and find inspiration.</h3></span>
                     <a class="ms-auto mb-2" href="/dash"><img src="{% static 'img/logo-icon.png' %}"  style="width: 7rem" alt=""></a>
                 </div>
@@ -75,12 +83,13 @@
 
 
                         {% endblock %}
-                <!-- <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4 rounded border border-light border-2">
+                <footer class="footer mt-auto py-3 bg-dark mb-2 mt-4 rounded border border-light border-2">
                     <div class="container">
                         <span class="text-muted"></span>
                     </div>
-                </footer> -->
+                </footer>
             
+        </div>
         </div>
     </body>
 </html> 

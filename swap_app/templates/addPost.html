@@ -13,10 +13,10 @@
         <div class="ms-3 mt-5">
             <form action="/post_content" method="POST">
                 {% csrf_token %}
-                <label for="title" class="text-light mb-3">Title:</label>
-                <input type="text" name="title">
-                <p><label for="content" class="text-light mt-2">Message:</label>
-                <input type="text" name="content"></p>
+                <label for="title" class="text-light mb-3">Title</label>
+                <input type="text" name="title" placeholder="title">
+                <p><label for="content" class="text-light mt-2">Message</label>
+                <input type="text" name="content" placeholder=""></p>
                 <button class="btn btn-dark mb-4">Post</button>
             </form>
         </div>
