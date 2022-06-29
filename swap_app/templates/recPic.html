@@ -1,10 +1,12 @@
 {% extends 'base_rec.html' %}
 {% block content %}
+
 <div class="p-3 mt-3 mb-3">
-    <form class="text-light" method="POST" action="/photo_up" enctype="multipart/form-data">
+    <form class="text-dark" method="POST" action="/photo_up" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_table }}
         <button class="btn btn-dark" type="submit">Upload</button>
+        <a href="/my_recipes" class="text-decoration-none text-success"><button class="btn btn-dark">No Pic</button></a>
     </form>
     {% if img_obj %}
         <h3>Succesfully uploaded : {{img_obj.title}}</h3>

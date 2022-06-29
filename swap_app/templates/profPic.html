@@ -1,7 +1,8 @@
 {% extends 'base_profile.html' %}
 {% block content %}
+
 <div class="p-3 mt-3 mb-3">
-    <form class="text-light" method="POST" action="/pr_photo_up" enctype="multipart/form-data">
+    <form class="text-dark" method="POST" action="/pr_photo_up" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_table }}
         <button class="btn btn-dark" type="submit">Upload</button>

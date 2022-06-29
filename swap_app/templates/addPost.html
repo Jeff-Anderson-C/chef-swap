@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="p-3 mt-3 mb-3">
-    <form class="text-light" method="POST" action="/add_post" enctype="multipart/form-data">
+    <form class="text-dark" method="POST" action="/add_post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-dark" type="submit">Upload</button>
@@ -13,16 +13,13 @@
         <div class="ms-3 mt-5">
             <form action="/post_content" method="POST">
                 {% csrf_token %}
-                <label for="title" class="text-light mb-3">Title</label>
+                <label for="title" class="text-dark mb-3">Title</label>
                 <input type="text" name="title" placeholder="title">
-                <p><label for="content" class="text-light mt-2">Message</label>
+                <p><label for="content" class="text-dark mt-2">Message</label>
                 <input type="text" name="content" placeholder=""></p>
                 <button class="btn btn-dark mb-4">Post</button>
             </form>
         </div>
     {% endif %}
 </div>
-
-
-
 {% endblock %}

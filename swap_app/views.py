@@ -414,6 +414,7 @@ def profile_edit_save(request):
     return redirect('/my_profile')
 
 def pr_photo_up(request):
+    user = User.objects.get(id = request.session ['userid'])
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -428,12 +429,12 @@ def pr_photo_up(request):
             return redirect('/prof_dash')
     else:
         form = ImageForm()
-    return render(request, 'profPic.html', {'form': form})
+    return render(request, 'profPic.html', {'form': form, 'user': user})
 
 def other_prof(request, chef_id):
     user = User.objects.get(id=chef_id)
     posts = Post.objects.filter(poster=chef_id).order_by('-created_at')
-    groups = Group.objects.filter(creator=user).exclude(name='All Recipes').exclude(active_group='off')
+    groups = Group.objects.filter(member=user).exclude(name='All Recipes').exclude(active_group='off')
     member_list = []
     for group in groups:
         for member in group.member.all().exclude(id=user.id):

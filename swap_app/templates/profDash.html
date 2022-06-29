@@ -1,6 +1,7 @@
 {% extends 'base_profile.html' %}
 {% block content %}
 {% load static %}
+
 <div class="d-flex justify-content-around mb-3 mt-3">
     <div style="height: 1100px;" class="overflow-scroll col-6">
         {% for post in posts %}
@@ -9,7 +10,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{post.post_title}}</h5>
                 <p class="card-text">{{post.content}} </p>
-                <a href="/destroy_post/{{post.pk}}" class="btn btn-primary">delete</a>
+                <a href="/destroy_post/{{post.pk}}" class="btn btn-sm btn-secondary">delete</a>
             </div>
         </div>
         {% endfor %}
@@ -19,7 +20,7 @@
             <img src="{{prof_pic.image.url}}" class="img-thumbnail col-5 rounded" alt="">
         </div>
         <div class="">
-            <a href="/add_post" class="text-decoration-none"><button style="width: 100%" class="btn btn-secondary" type="button">New Post</button></a>
+            <a href="/add_post" class="text-decoration-none"><button style="width: 100%" class="btn btn-sm btn-secondary" type="button">New Post</button></a>
         </div>
         <div style="height: 360px;" class=" mt-3 border border-secondary border-1 rounded bg-light p-2">
             <ul><h3 class="fw-bold">Group Members:</h3>

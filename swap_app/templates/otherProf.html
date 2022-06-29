@@ -1,5 +1,6 @@
 {% extends 'base_profile.html' %}
 {% block content %}
+
 <div class="d-flex justify-content-around mb-3 mt-3">
     <div style="height: 1100px;" class="overflow-scroll col-6">
         {% for post in posts %}
@@ -8,7 +9,6 @@
             <div class="card-body">
                 <h5 class="card-title">{{post.post_title}}</h5>
                 <p class="card-text">{{post.content}} </p>
-                <a href="#" class="btn btn-primary">Comment</a>
             </div>
         </div>
         {% endfor %}
