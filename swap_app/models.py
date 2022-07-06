@@ -58,7 +58,7 @@ class Group(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
 class Recipe(models.Model):
-    rec_name = models.CharField(max_length=255, validators=[validate_is_profane])
+    rec_name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='cat_recipes', max_length=45, on_delete=models.CASCADE)
     prep_time = models.CharField(max_length=20)
     procedure = models.CharField(max_length=1000, null=True)
