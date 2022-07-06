@@ -1,7 +1,6 @@
 from django.db import models
 import re
 from datetime import date
-from profanity.validators import validate_is_profane
 
 # Create your models here.
 
@@ -31,8 +30,6 @@ class UserManager(models.Manager):
         return errors
 
 
-
-#  validators=[validate_is_profane
 
 
 class User(models.Model):
@@ -64,7 +61,7 @@ class Recipe(models.Model):
     rec_name = models.CharField(max_length=255, validators=[validate_is_profane])
     category = models.ForeignKey(Category, related_name='cat_recipes', max_length=45, on_delete=models.CASCADE)
     prep_time = models.CharField(max_length=20)
-    procedure = models.CharField(max_length=455, null=True)
+    procedure = models.CharField(max_length=1000, null=True)
     ingredients = models.TextField(max_length=455, null=True)
     creator = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE, null=True)
     favorite = models.ManyToManyField(User, related_name='fav_recipes')
@@ -77,7 +74,7 @@ class TestRec(models.Model):
     rec_name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='test_cat_recipes', max_length=45, on_delete=models.CASCADE)
     prep_time = models.CharField(max_length=20)
-    procedure = models.CharField(max_length=455, null=True)
+    procedure = models.CharField(max_length=1000, null=True)
     ingredients = models.TextField(max_length=455, null=True)
     creator = models.ForeignKey(User, related_name='test_recipes', on_delete=models.CASCADE, null=True)
     notes = models.TextField(max_length=455, null=True)
@@ -85,7 +82,7 @@ class TestRec(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Image(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, null=True)
     image = models.ImageField(upload_to='images', default='default.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)

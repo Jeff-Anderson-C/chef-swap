@@ -91,7 +91,7 @@ def create_new(request):
         group_rec = rec_group,
     )
     request.session['rec_id'] = new_recipe.id
-    return redirect('/photo_up')
+    return redirect('/my_recipes')
 
 def change_pic(request, rec_id):
     user = User.objects.get(id= request.session ['userid'])
@@ -514,14 +514,14 @@ def add_post(request):
 
 def post_content(request):
     user = User.objects.get(id=request.session ['userid'])
-    this_image = Image.objects.get(id=request.session ['imageid'])
+    # this_image = Image.objects.get(id=request.session ['imageid'])
     this_post = Post.objects.create (
         post_title = request.POST ['title'],
         content = request.POST ['content'],
-        post_image = this_image,
+        # post_image = this_image,
         poster = user,
     )
-    key_pop = request.session.pop ('imageid')
+    # key_pop = request.session.pop ('imageid')
     return redirect('/prof_dash')
 
 def destroy_post(request, post_id):

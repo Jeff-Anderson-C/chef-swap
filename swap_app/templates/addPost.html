@@ -2,14 +2,14 @@
 {% block content %}
 
 <div class="p-3 mt-3 mb-3">
-    <form class="text-dark" method="POST" action="/add_post" enctype="multipart/form-data">
+    <!-- <form class="text-dark" method="POST" action="/add_post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-dark" type="submit">Upload</button>
     </form>
     {% if img_obj %}
         <h3>Succesfully uploaded : {{img_obj.title}}</h3>
-        <img src="{{img_obj.image.url}}" alt="connect" style="max-height:300px">
+        <img src="{{img_obj.image.url}}" alt="connect" style="max-height:300px"> -->
         <div class="ms-3 mt-5">
             <form action="/post_content" method="POST">
                 {% csrf_token %}
