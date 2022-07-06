@@ -512,6 +512,10 @@ def add_post(request):
         form = ImageForm()
     return render(request, 'addPost.html', {'form': form, 'user':user})
 
+def add_text_post(request):
+    user = User.objects.get(id=request.session ['userid'])
+    return render(request, 'addPost.html', {'user':user})
+
 def post_content(request):
     user = User.objects.get(id=request.session ['userid'])
     # this_image = Image.objects.get(id=request.session ['imageid'])

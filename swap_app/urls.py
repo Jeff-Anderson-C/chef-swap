@@ -40,6 +40,7 @@ urlpatterns = [
     path('prof_dash', views.prof_dash),
     path('pr_photo_up', views.pr_photo_up),
     path('kr_photo_up', views.kr_photo_up),
+    path('add_text_post', views.add_text_post),
     path('add_post', views.add_post),
     path('post_content', views.post_content),
     path('my_profile', views.my_profile),
