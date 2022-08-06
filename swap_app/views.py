@@ -9,7 +9,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, 'intro.html')
+    return render(request, 'index.html')
 
 def log_reg(request):
     return render(request, 'log_reg.html')
@@ -600,7 +600,7 @@ def join_request(request, group_id):
     user = User.objects.get(id=request.session ['userid'])
     group = Group.objects.get(id=group_id)
     if group.member.filter(id=user.id):
-        return redirect('/prof_dash')
+        return redirect('/groups')
     new_join = Invite.objects.create (
         sender = user,
         for_group = group, 
