@@ -53,7 +53,7 @@ urlpatterns = [
     path('destroy_post/<int:post_id>', views.destroy_post),
 
 
-    path('create_group', views.groups),
+    path('create_group', views.create_group),
     path('join_request/<int:group_id>', views.join_request),
     path('search_chefs', views.search_chefs),
     path('other_prof/<int:chef_id>', views.other_prof),

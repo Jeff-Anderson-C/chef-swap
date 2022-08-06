@@ -606,7 +606,7 @@ def join_request(request, group_id):
         for_group = group, 
         msg_txt = request.POST ['msg_txt']
     )
-    return redirect('/prof_dash')
+    return redirect('/groups')
 
 def accept_member(request, invite_id):
     invite = Invite.objects.get(id=invite_id)
