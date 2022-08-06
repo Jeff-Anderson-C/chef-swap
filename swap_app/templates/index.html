@@ -3,7 +3,7 @@
     <head>  
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chef Sourced</title>
+        <title>Chef Sourced: community and private-group recipe database</title>
         <meta name="description" content="Create groups of chefs, professional of just passionate, to collaborate on your 
         recipes, find inspiration in others recipes, and share ideas through collaboration. 
         Create and store your recipes in your personal or group recipe files. You can share your recipes with the whole community or 
@@ -33,7 +33,7 @@
                 </div>
                 
                 <div class="container d-flex justify-content-around">
-                    <div class="m-4 col-4 pt-5 d-flex justify-content-center shadow">
+                    <div class="m-2 col-5 pt-5 d-flex justify-content-center">
                         <form action="/login" method="POST"><h1>Login</h1>
                             {% csrf_token %}
                             <label for="email" class="form-label">Email</label>
@@ -43,14 +43,7 @@
                             <button class="btn btn-dark mt-4">Login</button>
                         </form>
                     </div>
-                    <div class="m-4 col-4 pt-5 d-flex justify-content-center shadow">
-                        <ul>
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <li {% if messassge.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                                {% endfor %}
-                        </ul>
-                            {% endif %}
+                    <div class="m-2 col-5 pt-5 d-flex justify-content-center">
                         <form action="/register" method="POST"><h1>Registration</h1>
                             {% csrf_token %}
                             <label for="first_name" class="form-label">First Name</label>
@@ -75,6 +68,13 @@
                     </div>
                 
                 </div>
+                <ul>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <li {% if messassge.tags %} class="text-alert {{ message.tags }}" {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                </ul>
+                    {% endif %}
             </div>
             <br>
             <br>
@@ -83,6 +83,11 @@
             </div>
             <br>
             <br>
+            <p>    Store all of your recipes that you want to have access to anywhere; share private recipes among chefs in your groups.
+                Recipes are sorted by category and separated by group. You can leave notes on your recipes to tell your group members how
+                you need help improving your recipe, or just tell your story. Your group members can suggest changes and save your recipe 
+                to their favorites.
+            </p>
             <br>
             <br>
             <br>
