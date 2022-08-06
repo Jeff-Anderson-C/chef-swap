@@ -126,11 +126,19 @@ def my_recipes(request):
     recipes = Recipe.objects.all()
     my_recs = Recipe.objects.filter(creator=user)
     cats = Category.objects.all()
+    groups = Group.objects.filter(member=user).exclude(name='All Recipes')
+    member_list = []
+    for group in groups:
+        for member in group.member.all().exclude(id=user.id):
+            if member not in member_list:
+                member_list.append(member)    
     context = {
         'recipes': recipes,
         'user': user,
         'user_recipes': my_recs.order_by('category', 'rec_name'),
         'cats':cats,
+        'groups':groups,
+        'member_list':member_list,
     }
     return render(request, 'myRecipes.html', context)
 
